@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-inner hidden sm:flex">
+                    <div class="bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-inner">
                         <span class="text-base sm:text-lg">⏳</span>
                         <div class="text-right">
                             <span id="days-countdown" class="text-sm sm:text-base font-black text-amber-800 font-sans">--</span>
@@ -113,7 +113,6 @@
     <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-8 flex-1 w-full relative z-10">
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 xl:gap-8">
             
-            <!-- Sidebar Logbook -->
             <div id="logbook-sidebar" class="xl:col-span-1 bg-white/80 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100 flex flex-col h-auto max-h-[45vh] xl:max-h-none xl:h-[calc(100vh-140px)] xl:sticky xl:top-24 z-10 order-2 xl:order-1 transition-all duration-300">
                 <div class="mb-4 space-y-3 shrink-0">
                     <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center justify-between">
@@ -134,10 +133,8 @@
                 </div>
             </div>
 
-            <!-- Content Area (Only 1 matching set of panels inside) -->
             <div id="main-content-area" class="xl:col-span-3 order-1 xl:order-2 transition-all duration-300">
 
-                <!-- 1. Input Panel -->
                 <div id="input-panel" class="panel-content grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8">
                     <div class="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100 space-y-6 sm:space-y-8">
                         <div>
@@ -154,7 +151,6 @@
                             </div>
                         </div>
 
-                        <!-- VARC INPUT -->
                         <div id="input-varc-block" class="space-y-4">
                             <h3 class="font-bold text-indigo-900 text-[11px] sm:text-sm flex justify-between items-center border-b border-slate-100 pb-2"><span id="varcMaxLbl">VARC (Max: 24)</span><span id="varc-lbl" class="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-bold font-sans">24 Unattempted</span></h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
@@ -170,7 +166,6 @@
                             <div id="varc-micro-panel" class="hidden pt-3 border-t border-indigo-50"><div id="varc-micro-container" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6"></div></div>
                         </div>
 
-                        <!-- DILR INPUT -->
                         <div id="input-dilr-block" class="space-y-4 pt-4 border-t border-slate-50">
                             <h3 class="font-bold text-emerald-900 text-[11px] sm:text-sm flex justify-between items-center border-b border-slate-100 pb-2"><span id="dilrMaxLbl">DILR (Max: 20)</span><span id="dilr-lbl" class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold font-sans">20 Unattempted</span></h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
@@ -186,7 +181,6 @@
                             <div id="dilr-micro-panel" class="hidden pt-3 border-t border-emerald-50"><div id="dilr-micro-container" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6"></div></div>
                         </div>
 
-                        <!-- QA INPUT -->
                         <div id="input-qa-block" class="space-y-4 pt-4 border-t border-slate-50">
                             <h3 class="font-bold text-amber-900 text-[11px] sm:text-sm flex justify-between items-center border-b border-slate-100 pb-2"><span id="qaMaxLbl">Quant (Max: 22)</span><span id="qa-lbl" class="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full font-bold font-sans">22 Unattempted</span></h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
@@ -214,9 +208,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Dashboard Master Panel -->
                 <div id="dashboard-panel" class="panel-content hidden flex flex-col space-y-4">
-                    <!-- Dashboard Actions -->
                     <div class="flex justify-between items-center flex-wrap gap-4 mb-2 print:hidden">
                         <div class="bg-white/90 backdrop-blur-md p-1.5 rounded-xl inline-flex gap-1 border border-slate-200 shadow-sm self-start overflow-x-auto max-w-full hide-scrollbar">
                             <button onclick="switchDashboardView('overall')" id="dash-btn-overall" class="dash-nav-btn whitespace-nowrap px-4 py-1.5 text-xs sm:text-sm font-bold rounded-lg bg-indigo-50 text-indigo-700 transition-colors">Overall Trends</button>
@@ -234,7 +226,6 @@
                         </div>
                     </div>
 
-                    <!-- Overall View -->
                     <div id="overall-view" class="dash-view space-y-6 sm:space-y-8">
                         <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                             <div class="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden flex flex-col justify-center"><div class="absolute -right-2 -bottom-2 sm:-right-4 sm:-bottom-4 opacity-5 text-6xl sm:text-8xl font-black font-sans">Σ</div><p class="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400 font-sans">Selected Raw Score</p><div class="flex items-baseline gap-2 mt-1"><h3 id="kpi-score" class="text-3xl sm:text-4xl font-bold text-slate-900 leading-none">--</h3><p id="kpi-percentile" class="text-[10px] sm:text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg font-sans">-- %ile</p></div></div>
@@ -249,13 +240,11 @@
                         </div>
                     </div>
 
-                    <!-- Sectional Views -->
                     <div id="varc-view" class="dash-view hidden sectional-panel" data-section="varc"></div>
                     <div id="dilr-view" class="dash-view hidden sectional-panel" data-section="dilr"></div>
                     <div id="qa-view" class="dash-view hidden sectional-panel" data-section="qa"></div>
                 </div>
 
-                <!-- 3. Calendar Panel -->
                 <div id="calendar-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
@@ -265,7 +254,6 @@
                             </h2>
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <!-- Schedule Form -->
                             <div class="lg:col-span-1 bg-slate-50 border border-slate-200 p-5 rounded-2xl space-y-4 self-start">
                                 <h3 class="font-bold text-slate-800 text-sm font-sans uppercase tracking-wider">Schedule New Mock</h3>
                                 <form onsubmit="scheduleMock(event)" class="space-y-3">
@@ -282,7 +270,6 @@
                                     <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-600 transition-colors shadow-md mt-2">Confirm Schedule</button>
                                 </form>
                             </div>
-                            <!-- Calendar View -->
                             <div class="lg:col-span-2 space-y-8">
                                 <div>
                                     <h3 class="font-bold text-emerald-700 text-sm mb-4 flex items-center gap-2 font-sans uppercase tracking-wider"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Upcoming Schedule</h3>
@@ -297,7 +284,6 @@
                     </div>
                 </div>
 
-                <!-- 4. PYQ Panel -->
                 <div id="pyq-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-6 gap-4">
@@ -377,7 +363,6 @@
                     </div>
                 </div>
 
-                <!-- 5. Profilizer Panel -->
                 <div id="profilizer-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
                         <div class="flex justify-between items-start mb-6">
@@ -463,7 +448,6 @@
                     </div>
                 </div>
 
-                <!-- 6. Profile Panel -->
                 <div id="profile-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-4xl mx-auto w-full">
                         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
@@ -585,7 +569,6 @@
             </div>
         </div>
 
-        <!-- ================= HOW TO USE SECTION ================= -->
         <section class="max-w-7xl mx-auto mt-12 relative z-10 print:hidden">
             <div class="bg-indigo-900 text-white rounded-3xl p-6 sm:p-10 shadow-lg overflow-hidden relative">
                 <div class="absolute -right-10 -top-10 text-9xl opacity-5">📖</div>
@@ -634,7 +617,6 @@
             </div>
         </section>
 
-        <!-- ================= CAT MADE EASY (USPs) SECTION ================= -->
         <section class="max-w-7xl mx-auto mt-12 mb-12 relative z-10 print:hidden">
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2 mb-8 justify-center">
                 CAT made Easy 🚀
@@ -684,7 +666,6 @@
             </div>
         </section>
 
-        <!-- ================= REVIEWS SECTION ================= -->
         <section class="max-w-7xl mx-auto mt-12 mb-8 relative z-10 print:hidden">
             <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-slate-200/50 pb-4">
                 <div>
@@ -700,7 +681,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                <!-- Review 1: Student -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-indigo-200 transition-colors flex flex-col justify-between">
                     <div>
                         <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-indigo-50 transition-colors">"</div>
@@ -718,7 +698,6 @@
                     </div>
                 </div>
 
-                <!-- Review 2: Working Professional -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-emerald-200 transition-colors flex flex-col justify-between">
                     <div>
                         <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-emerald-50 transition-colors">"</div>
@@ -736,7 +715,6 @@
                     </div>
                 </div>
 
-                <!-- Review 3: CA/Finance Background -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-amber-200 transition-colors flex flex-col justify-between">
                     <div>
                         <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-amber-50 transition-colors">"</div>
@@ -754,7 +732,6 @@
                     </div>
                 </div>
 
-                <!-- Review 4: Repeat Dropper -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-rose-200 transition-colors flex flex-col justify-between">
                     <div>
                         <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-rose-50 transition-colors">"</div>
@@ -772,7 +749,6 @@
                     </div>
                 </div>
 
-                <!-- Review 5: Arts Student -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-sky-200 transition-colors flex flex-col justify-between">
                     <div>
                         <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-sky-50 transition-colors">"</div>
@@ -790,7 +766,6 @@
                     </div>
                 </div>
 
-                <!-- Review 6: Freelancer -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-violet-200 transition-colors flex flex-col justify-between">
                     <div>
                         <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-violet-50 transition-colors">"</div>
@@ -809,8 +784,7 @@
                 </div>
             </div>
         </section>
-        
-        <!-- ================= FAQs SECTION ================= -->
+
         <section class="max-w-4xl mx-auto mt-12 mb-12 relative z-10 print:hidden">
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2 mb-8 justify-center">
                 Frequently Asked Questions
@@ -955,7 +929,6 @@
         </div>
     </footer>
 
-    <!-- Subscription Modal -->
     <div id="subscription-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm sm:max-w-md w-full shadow-2xl border border-slate-100 transform transition-all">
             <div class="text-center">
@@ -968,7 +941,6 @@
                 </div>
                 <div class="flex gap-3 items-center">
                     <button onclick="hideSubscriptionModal()" class="flex-1 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-colors font-sans text-xs sm:text-sm border border-slate-200 cursor-pointer text-center h-[46px]">Maybe Later</button>
-                    <!-- RAZORPAY INTEGRATION -->
                     <div class="flex-1 w-full h-[46px] overflow-hidden rounded-xl">
                         <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_T14scMntU929n9" async> </script> </form>
                     </div>
@@ -977,7 +949,6 @@
         </div>
     </div>
 
-    <!-- Login/Signup Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-white p-8 rounded-3xl shadow-2xl border border-slate-100 relative max-h-[90vh] overflow-y-auto custom-scroll">
             <button onclick="toggleAuthModal(false)" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold p-2">✕</button>
@@ -989,7 +960,6 @@
                 <button onclick="showAuthPanel('signup')" id="auth-tab-signup" class="pb-2 font-semibold text-slate-400 hover:text-slate-600 transition-colors">Sign Up</button>
             </div>
 
-            <!-- Login Form -->
             <form id="loginPanel" class="space-y-4" onsubmit="handleLogin(event)">
                 <input type="text" id="login_input" placeholder="Email or Contact No." class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-sm" required>
                 <input type="password" id="login_pass" placeholder="Password" class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-sm" required>
@@ -997,7 +967,6 @@
                 <p class="text-xs text-center text-slate-500 cursor-pointer hover:text-indigo-600 font-sans">Forgot Password?</p>
             </form>
 
-            <!-- Signup Form -->
             <form id="signupPanel" class="space-y-3 hidden" onsubmit="handleSignup(event)">
                 <div class="grid grid-cols-2 gap-3">
                     <input type="text" id="auth_fname" placeholder="First Name *" class="w-full p-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-xs sm:text-sm" required>
@@ -1060,13 +1029,18 @@
 
         function toggleAuthModal(show) {
             const modal = document.getElementById('auth-modal');
+            if(!modal) return;
             if (show) { modal.classList.remove('hidden'); showAuthPanel('login'); } 
             else { modal.classList.add('hidden'); }
         }
 
         function showAuthPanel(type) {
-            document.getElementById('loginPanel').classList.toggle('hidden', type !== 'login');
-            document.getElementById('signupPanel').classList.toggle('hidden', type !== 'signup');
+            const loginP = document.getElementById('loginPanel');
+            const signP = document.getElementById('signupPanel');
+            if(!loginP || !signP) return;
+            
+            loginP.classList.toggle('hidden', type !== 'login');
+            signP.classList.toggle('hidden', type !== 'signup');
             const loginBtn = document.getElementById('auth-tab-login'), signupBtn = document.getElementById('auth-tab-signup');
             
             if (type === 'login') {
@@ -1099,10 +1073,6 @@
                 alert('Login successful! Welcome back.');
                 toggleAuthModal(false);
                 switchTab('profile-panel');
-                
-                document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); });
-                const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\', event)"]');
-                if(profileBtn) { profileBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); profileBtn.classList.remove('text-slate-500', 'font-semibold'); }
                 loadProfile();
             } else {
                 alert('Invalid Email/Mobile or Password. Please try again or Sign up.');
@@ -1120,7 +1090,6 @@
             };
 
             let users = JSON.parse(localStorage.getItem('cat_analytics_users')) || [];
-            
             if(users.some(u => u.email === formData.email || u.phone === formData.phone)) {
                 alert("Account with this Email or Contact Number already exists. Please login instead.");
                 showAuthPanel('login');
@@ -1141,9 +1110,6 @@
             const concludeSignup = (msg) => {
                 setLoggedIn(true);
                 alert(msg); toggleAuthModal(false); switchTab('profile-panel');
-                document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); });
-                const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\', event)"]');
-                if(profileBtn) { profileBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); profileBtn.classList.remove('text-slate-500', 'font-semibold'); }
                 loadProfile(); 
             };
 
@@ -1157,16 +1123,22 @@
         
         function toggleNotifications() {
             const dd = document.getElementById('notif-dropdown');
-            dd.classList.toggle('hidden');
-            if(!dd.classList.contains('hidden')) renderNotificationList();
+            if(dd) {
+                dd.classList.toggle('hidden');
+                if(!dd.classList.contains('hidden')) renderNotificationList();
+            }
         }
 
         function renderNotificationList() {
-            const list = document.getElementById('notif-list'); list.innerHTML = '';
+            const list = document.getElementById('notif-list'); 
+            const badge = document.getElementById('notif-badge');
+            if(!list || !badge) return;
+            
+            list.innerHTML = '';
             const now = new Date();
             const upcoming = mockSchedule.filter(m => new Date(m.date+'T'+m.time) >= now).sort((a,b) => new Date(a.date+'T'+a.time) - new Date(b.date+'T'+b.time));
             
-            document.getElementById('notif-badge').innerText = upcoming.length;
+            badge.innerText = upcoming.length;
 
             if(upcoming.length === 0) {
                 list.innerHTML = '<p class="text-xs text-slate-400 italic py-2">No upcoming mocks scheduled.</p>';
@@ -1203,6 +1175,7 @@
 
         function renderSchedule() {
             const upContainer = document.getElementById('sched_upcoming'); const pastContainer = document.getElementById('sched_past');
+            if(!upContainer || !pastContainer) return;
             upContainer.innerHTML = ''; pastContainer.innerHTML = ''; const now = new Date();
             mockSchedule.forEach(m => {
                 const isPast = new Date(m.date+'T'+m.time) < now;
@@ -1234,8 +1207,11 @@
             const targetDate = new Date('November 29, 2026 00:00:00').getTime();
             function updateClock() {
                 const now = new Date().getTime(); const difference = targetDate - now;
-                if (difference <= 0) { document.getElementById('days-countdown').innerText = "00"; return; }
-                const days = Math.ceil(difference / (1000 * 60 * 60 * 24)); document.getElementById('days-countdown').innerText = days;
+                const cEl = document.getElementById('days-countdown');
+                if(!cEl) return;
+                if (difference <= 0) { cEl.innerText = "00"; return; }
+                const days = Math.ceil(difference / (1000 * 60 * 60 * 24)); 
+                cEl.innerText = days;
             }
             updateClock(); setInterval(updateClock, 60000);
         }
@@ -1243,7 +1219,9 @@
         /* --- PYQ WORKSPACE ENGINE --- */
         let activePyqSession = null;
         function populatePyqDropdowns() {
-            const picker = document.getElementById('pyq-year'); let fragment = '';
+            const picker = document.getElementById('pyq-year'); 
+            if(!picker) return;
+            let fragment = '';
             for(let y = 2025; y >= 2006; y--) { fragment += `<option value="${y}">CAT ${y} Official Paper</option>`; }
             picker.innerHTML = fragment;
             document.getElementById('pyq-file-handler').addEventListener('change', function(e) {
@@ -1357,7 +1335,9 @@
             QA: ['Silly calculation', 'Misread question', 'Formula gap', 'Spent >3 mins on 1 Q', 'Fell for trap option', 'Ignored edge cases', 'End-mock fatigue', 'Skipped easy Qs']
         };
 
-        let currentSelectedTags = []; const today = new Date(); document.getElementById('mockDate').value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+        let currentSelectedTags = []; const today = new Date(); 
+        let mkD = document.getElementById('mockDate');
+        if(mkD) mkD.value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
         function renderInputTags() {
             const container = document.getElementById('tag-input-container'); 
@@ -1411,22 +1391,31 @@
 
         function validateAndSumMicro(sec, id) {
             let attEl = document.getElementById(`micro_${id}_att`), corrEl = document.getElementById(`micro_${id}_corr`);
+            if(!attEl || !corrEl) return;
             let att = parseInt(attEl.value) || 0, corr = parseInt(corrEl.value) || 0;
             if (att < 0) att = 0; if (corr < 0) corr = 0; if (corr > att) corr = att;
             attEl.value = att; corrEl.value = corr; let totalAtt = 0, totalCorr = 0;
-            for (const key of Object.values(SYLLABUS[sec])) { totalAtt += parseInt(document.getElementById(`micro_${key}_att`).value) || 0; totalCorr += parseInt(document.getElementById(`micro_${key}_corr`).value) || 0; }
+            for (const key of Object.values(SYLLABUS[sec])) { 
+                let ae = document.getElementById(`micro_${key}_att`);
+                let ce = document.getElementById(`micro_${key}_corr`);
+                totalAtt += ae ? (parseInt(ae.value) || 0) : 0; 
+                totalCorr += ce ? (parseInt(ce.value) || 0) : 0; 
+            }
             if (totalAtt > maxQs[sec]) totalAtt = maxQs[sec]; if (totalCorr > totalAtt) totalCorr = totalAtt;
             syncFromNum(sec, 'corr', true);
         }
 
         function renderMicroInputs() {
             ['varc', 'dilr', 'qa'].forEach(sec => {
-                const container = document.getElementById(`${sec}-micro-container`); let html = '';
-                for (const [label, id] of Object.entries(SYLLABUS[sec])) { html += `<div class="flex justify-between items-center text-xs border-b border-slate-100/50 py-2"><span class="text-slate-600 font-medium w-3/5 truncate pr-2 text-[10px] sm:text-[11px] italic" title="${label}">${label}</span><div class="flex gap-2 w-2/5 justify-end"><div class="flex items-center gap-1"><span class="text-[8px] font-bold text-slate-400 font-sans">Att:</span><input type="number" id="micro_${id}_att" min="0" value="0" onchange="validateAndSumMicro('${sec}', '${id}')" class="w-7 h-6 text-center bg-white border border-slate-200 rounded focus:border-indigo-500 font-bold text-slate-700 text-[10px] font-sans"></div><div class="flex items-center gap-1"><span class="text-[8px] font-bold text-slate-400 font-sans">Cor:</span><input type="number" id="micro_${id}_corr" min="0" value="0" onchange="validateAndSumMicro('${sec}', '${id}')" class="w-7 h-6 text-center bg-white border border-slate-200 rounded focus:border-emerald-500 font-bold text-emerald-600 text-[10px] font-sans"></div></div></div>`; } container.innerHTML = html;
+                const container = document.getElementById(`${sec}-micro-container`); 
+                if(!container) return;
+                let html = '';
+                for (const [label, id] of Object.entries(SYLLABUS[sec])) { html += `<div class="flex justify-between items-center text-xs border-b border-slate-100/50 py-2"><span class="text-slate-600 font-medium w-3/5 truncate pr-2 text-[10px] sm:text-[11px] italic" title="${label}">${label}</span><div class="flex gap-2 w-2/5 justify-end"><div class="flex items-center gap-1"><span class="text-[8px] font-bold text-slate-400 font-sans">Att:</span><input type="number" id="micro_${id}_att" min="0" value="0" onchange="validateAndSumMicro('${sec}', '${id}')" class="w-7 h-6 text-center bg-white border border-slate-200 rounded focus:border-indigo-500 font-bold text-slate-700 text-[10px] font-sans"></div><div class="flex items-center gap-1"><span class="text-[8px] font-bold text-slate-400 font-sans">Cor:</span><input type="number" id="micro_${id}_corr" min="0" value="0" onchange="validateAndSumMicro('${sec}', '${id}')" class="w-7 h-6 text-center bg-white border border-slate-200 rounded focus:border-emerald-500 font-bold text-emerald-600 text-[10px] font-sans"></div></div></div>`; } 
+                container.innerHTML = html;
             });
         }
 
-        function toggleMicro(sec) { const panel = document.getElementById(`${sec}-micro-panel`); panel.classList.contains('hidden') ? panel.classList.remove('hidden') : panel.classList.add('hidden'); }
+        function toggleMicro(sec) { const panel = document.getElementById(`${sec}-micro-panel`); if(panel){ panel.classList.contains('hidden') ? panel.classList.remove('hidden') : panel.classList.add('hidden'); } }
         function predictPercentile(score, type) {
             if (score <= 0) return "0.00";
             const brackets = { 'overall': [[0,0], [36,80], [48,90], [62,95], [82,99], [100,99.5], [120,99.9], [198,100]], 'varc': [[0,0], [18,80], [24,90], [30,95], [40,99], [50,99.5], [72,100]], 'dilr': [[0,0], [12,80], [16,90], [22,95], [30,99], [40,99.5], [60,100]], 'qa': [[0,0], [10,80], [15,90], [22,95], [32,99], [45,99.5], [66,100]] };
@@ -1442,13 +1431,19 @@
 
         function updateMaxQs(sec) { 
             const val = parseInt(document.getElementById(`${sec}MaxQs`).value) || 0; maxQs[sec] = val; 
-            ['Corr', 'IncMcq', 'IncTita'].forEach(s => { document.getElementById(`${sec}${s}`).max = val; document.getElementById(`${sec}${s}Val`).max = val; }); 
+            ['Corr', 'IncMcq', 'IncTita'].forEach(s => { 
+                let range = document.getElementById(`${sec}${s}`);
+                let inpt = document.getElementById(`${sec}${s}Val`);
+                if(range) range.max = val; 
+                if(inpt) inpt.max = val; 
+            }); 
             syncSub(sec, 'corr');
         }
 
         function syncFromNum(sec, field, fromMicro = false) { 
             let numInput = document.getElementById(`${sec}${field.charAt(0).toUpperCase() + field.slice(1)}Val`);
             let slider = document.getElementById(`${sec}${field.charAt(0).toUpperCase() + field.slice(1)}`); 
+            if(!numInput || !slider) return;
             let val = parseInt(numInput.value) || 0; 
             if (val > maxQs[sec]) val = maxQs[sec]; 
             if (val < 0) val = 0; 
@@ -1458,20 +1453,24 @@
 
         function syncSub(sec, field, fromMicro = false) { 
             const max = maxQs[sec]; 
-            let corr = parseInt(document.getElementById(`${sec}Corr`).value), 
-                incMcq = parseInt(document.getElementById(`${sec}IncMcq`).value), 
-                incTita = parseInt(document.getElementById(`${sec}IncTita`).value); 
+            let cEl = document.getElementById(`${sec}Corr`);
+            let mEl = document.getElementById(`${sec}IncMcq`);
+            let tEl = document.getElementById(`${sec}IncTita`);
+            if(!cEl || !mEl || !tEl) return;
+
+            let corr = parseInt(cEl.value) || 0, 
+                incMcq = parseInt(mEl.value) || 0, 
+                incTita = parseInt(tEl.value) || 0; 
             let total = corr + incMcq + incTita; 
             
             if (total > max) { 
                 let exc = total - max; 
                 let el = document.getElementById(`${sec}${field.charAt(0).toUpperCase() + field.slice(1)}`); 
-                el.value = parseInt(el.value) - exc; 
-                document.getElementById(`${sec}${field.charAt(0).toUpperCase() + field.slice(1)}Val`).value = el.value;
-                corr = parseInt(document.getElementById(`${sec}Corr`).value); 
-                incMcq = parseInt(document.getElementById(`${sec}IncMcq`).value); 
-                incTita = parseInt(document.getElementById(`${sec}IncTita`).value); 
-                total = corr + incMcq + incTita; 
+                if(el){
+                    el.value = parseInt(el.value) - exc; 
+                    let inVal = document.getElementById(`${sec}${field.charAt(0).toUpperCase() + field.slice(1)}Val`);
+                    if(inVal) inVal.value = el.value;
+                }
             } 
             
             if (!fromMicro) clearSectionMicro(sec); 
@@ -1480,14 +1479,19 @@
 
         function calculateLiveMetrics(sec = null) { 
             (sec ? [sec] : ['varc', 'dilr', 'qa']).forEach(s => { 
-                const corr = parseInt(document.getElementById(`${s}Corr`).value) || 0;
-                const incMcq = parseInt(document.getElementById(`${s}IncMcq`).value) || 0;
-                const incTita = parseInt(document.getElementById(`${s}IncTita`).value) || 0;
+                const cEl = document.getElementById(`${s}Corr`);
+                const mEl = document.getElementById(`${s}IncMcq`);
+                const tEl = document.getElementById(`${s}IncTita`);
+                if(!cEl || !mEl || !tEl) return;
+
+                const corr = parseInt(cEl.value) || 0;
+                const incMcq = parseInt(mEl.value) || 0;
+                const incTita = parseInt(tEl.value) || 0;
                 const att = corr + incMcq + incTita;
                 
-                document.getElementById(`${s}CorrVal`).value = corr; 
-                document.getElementById(`${s}IncMcqVal`).value = incMcq; 
-                document.getElementById(`${s}IncTitaVal`).value = incTita; 
+                let cv = document.getElementById(`${s}CorrVal`); if(cv) cv.value = corr; 
+                let mv = document.getElementById(`${s}IncMcqVal`); if(mv) mv.value = incMcq; 
+                let tv = document.getElementById(`${s}IncTitaVal`); if(tv) tv.value = incTita; 
                 
                 let displayAtt = document.getElementById(`${s}DisplayAtt`);
                 if(displayAtt) displayAtt.innerText = att;
@@ -1498,9 +1502,12 @@
         }
         
         function adjustLoggerSliders() { 
-            const type = document.getElementById('mockType').value; 
+            const mt = document.getElementById('mockType');
+            if(!mt) return;
+            const type = mt.value; 
             ['varc', 'dilr', 'qa'].forEach(s => { 
                 const block = document.getElementById(`input-${s}-block`); 
+                if(!block) return;
                 const active = isSectionActive(type, s); 
                 block.style.opacity = active ? "1" : "0.3"; 
                 block.style.pointerEvents = active ? "auto" : "none"; 
@@ -1513,11 +1520,14 @@
         function getFilteredData() { const fFormat = document.getElementById('logbookFilter').value, fMonth = document.getElementById('logbookMonthFilter').value; return mockStorage.filter(m => { let mtMonth = true; if (fMonth !== "All") { const [y, mn] = m.date.split('-'); mtMonth = (`${y}-${mn}` === fMonth); } return (fFormat === "All" || m.type === fFormat) && mtMonth; }); }
 
         function populateMonthDropdown() {
-            const filter = document.getElementById('logbookMonthFilter'), cur = filter.value; const unique = [...new Set(mockStorage.map(m => { const [y, mn] = m.date.split('-'); return `${y}-${mn}`; }))].sort((a,b) => b.localeCompare(a));
+            const filter = document.getElementById('logbookMonthFilter');
+            if(!filter) return;
+            const cur = filter.value; 
+            const unique = [...new Set(mockStorage.map(m => { const [y, mn] = m.date.split('-'); return `${y}-${mn}`; }))].sort((a,b) => b.localeCompare(a));
             let optionsHtml = '<option value="All">All Months</option>'; unique.forEach(mStr => { const [y, m] = mStr.split('-'); optionsHtml += `<option value="${mStr}">${new Date(y, m-1, 1).toLocaleString('en-US', {month:'short', year:'numeric'})}</option>`; }); filter.innerHTML = optionsHtml; if(Array.from(filter.options).some(o => o.value === cur)) filter.value = cur;
         }
 
-        function clearMicroInputs() { document.querySelectorAll('input[id^="micro_"]').forEach(el => el.value = 0); }
+        function clearAllData() { if(confirm('Warning: This will permanently delete your tracking history from this device. Proceed?')) { localStorage.removeItem('cat_analytics_logbook'); mockStorage = []; activeInspectedMock = null; populateMonthDropdown(); renderHistorySidebar(); switchTab('input-panel'); calculateLiveMetrics(); } }
 
         function deleteMock(id, event) {
             event.stopPropagation();
@@ -1530,8 +1540,9 @@
         function commitMockToStorage() {
             if(!verifyIntegrity()) return;
             
-            if (!isLoggedIn()) {
-                alert("Please Login or Sign Up to secure your data and use the Test Logger.");
+            // MANDATORY AUTH WALL AFTER 1 FREE LOG
+            if (mockStorage.length >= 1 && !isLoggedIn()) {
+                alert("Awesome! You've logged your first mock.\n\nPlease Login or Sign Up to secure your data and continue using the Test Logger.");
                 toggleAuthModal(true);
                 return;
             }
@@ -1542,20 +1553,48 @@
             const buildSec = (s) => { 
                 const act = isSectionActive(type, s); 
                 let micro = {}; 
-                if (act) { for (const id of Object.values(SYLLABUS[s])) { micro[id] = { att: parseInt(document.getElementById(`micro_${id}_att`).value) || 0, corr: parseInt(document.getElementById(`micro_${id}_corr`).value) || 0 }; } } 
+                if (act) { 
+                    for (const id of Object.values(SYLLABUS[s])) { 
+                        let mae = document.getElementById(`micro_${id}_att`);
+                        let mce = document.getElementById(`micro_${id}_corr`);
+                        micro[id] = { 
+                            att: mae ? parseInt(mae.value) || 0 : 0, 
+                            corr: mce ? parseInt(mce.value) || 0 : 0 
+                        }; 
+                    } 
+                } 
+                
+                let cEl = document.getElementById(`${s}Corr`);
+                let mEl = document.getElementById(`${s}IncMcq`);
+                let tEl = document.getElementById(`${s}IncTita`);
+                
+                let cV = cEl ? parseInt(cEl.value) || 0 : 0;
+                let mV = mEl ? parseInt(mEl.value) || 0 : 0;
+                let tV = tEl ? parseInt(tEl.value) || 0 : 0;
+
                 return { 
-                    att: act ? (parseInt(document.getElementById(`${s}Corr`).value) + parseInt(document.getElementById(`${s}IncMcq`).value) + parseInt(document.getElementById(`${s}IncTita`).value)) : 0, 
-                    corr: act ? parseInt(document.getElementById(`${s}Corr`).value) : 0, 
-                    incMcq: act ? parseInt(document.getElementById(`${s}IncMcq`).value) : 0, 
-                    incTita: act ? parseInt(document.getElementById(`${s}IncTita`).value) : 0, 
+                    att: act ? (cV + mV + tV) : 0, 
+                    corr: act ? cV : 0, 
+                    incMcq: act ? mV : 0, 
+                    incTita: act ? tV : 0, 
                     micro: micro 
                 }; 
             };
             const item = { id: 'mock_' + Date.now(), type: type, name: document.getElementById('mockName').value || 'Unnamed Mock', date: document.getElementById('mockDate').value, tags: [...currentSelectedTags], remarks: document.getElementById('remarksInput').value, maxQsConfig: { ...maxQs }, metrics: { varc: buildSec('varc'), dilr: buildSec('dilr'), qa: buildSec('qa') } };
             
             mockStorage.unshift(item); localStorage.setItem('cat_analytics_logbook', JSON.stringify(mockStorage));
-            document.getElementById('mockName').value = ""; document.getElementById('remarksInput').value = ""; currentSelectedTags = []; renderInputTags(); clearMicroInputs();
-            ['varc', 'dilr', 'qa'].forEach(s => { ['Corr', 'IncMcq', 'IncTita'].forEach(f => { document.getElementById(`${s}${f}`).value = 0; document.getElementById(`${s}${f}Val`).value = 0; }); calculateLiveMetrics(s); });
+            document.getElementById('mockName').value = ""; document.getElementById('remarksInput').value = ""; currentSelectedTags = []; renderInputTags(); 
+            document.querySelectorAll('input[id^="micro_"]').forEach(el => el.value = 0);
+            
+            ['varc', 'dilr', 'qa'].forEach(s => { 
+                ['Corr', 'IncMcq', 'IncTita'].forEach(f => { 
+                    let r = document.getElementById(`${s}${f}`);
+                    let v = document.getElementById(`${s}${f}Val`);
+                    if(r) r.value = 0; 
+                    if(v) v.value = 0; 
+                }); 
+                calculateLiveMetrics(s); 
+            });
             populateMonthDropdown(); renderHistorySidebar(); loadAndInspectMock(item.id); switchTab('dashboard-panel'); switchDashboardView('overall');
         }
 
@@ -1563,7 +1602,10 @@
             if(!verifyIntegrity()) return;
             const container = document.getElementById('historyList'); 
             if(!container) return;
-            container.innerHTML = ''; let filtered = getFilteredData(); document.getElementById('logCount').innerText = filtered.length;
+            container.innerHTML = ''; let filtered = getFilteredData(); 
+            let lC = document.getElementById('logCount');
+            if(lC) lC.innerText = filtered.length;
+            
             if (filtered.length === 0) return container.innerHTML = `<div class="text-center py-6 text-slate-400 text-[11px] font-semibold border border-dashed rounded-xl bg-slate-50/50 backdrop-blur-md font-sans">No logs found.</div>`;
 
             filtered.forEach(m => {
@@ -1573,7 +1615,7 @@
                 c.innerHTML = `<div class="flex justify-between items-start gap-2"><div class="flex-1 min-w-0"><span class="text-xs sm:text-sm font-bold truncate text-slate-800 block">${m.name}</span><span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 block font-sans">${new Date(m.date).toLocaleDateString('en-IN', {month:'short', day:'numeric'})}</span></div><div class="flex flex-col items-end gap-1.5 shrink-0"><div class="flex items-center gap-1.5"><span class="text-[8px] sm:text-[9px] uppercase font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap font-sans ${m.type === "Full Length" ? 'bg-slate-800 text-white' : 'bg-indigo-100 text-indigo-800'}">${m.type.replace(' Sectional', '')}</span><button onclick="deleteMock('${m.id}', event)" class="text-slate-300 hover:text-rose-500 transition-colors" title="Delete Entry"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div><div class="text-right"><span class="text-[11px] sm:text-xs font-black text-indigo-600 block leading-none font-sans">R: ${score}</span><span class="text-[9px] sm:text-[10px] font-bold text-emerald-500 block mt-0.5 font-sans">${predictPercentile(score, pType)}%ile</span></div></div></div>`;
                 container.appendChild(c);
             });
-            if(!document.getElementById('dashboard-panel').classList.contains('hidden') && activeInspectedMock) renderOverallHistoricalCharts();
+            if(document.getElementById('dashboard-panel') && !document.getElementById('dashboard-panel').classList.contains('hidden') && activeInspectedMock) renderOverallHistoricalCharts();
         }
 
         function renderOverallHistoricalCharts() {
@@ -1593,9 +1635,14 @@
             const calc = (s) => (s.corr * 3) - (s.incMcq * 1); const vS = calc(target.metrics.varc), dS = calc(target.metrics.dilr), qS = calc(target.metrics.qa); const tS = vS + dS + qS, tA = target.metrics.varc.att + target.metrics.dilr.att + target.metrics.qa.att, tC = target.metrics.varc.corr + target.metrics.dilr.corr + target.metrics.qa.corr;
             const hMax = target.maxQsConfig || { varc: 24, dilr: 20, qa: 22 }; let mQs = 0, ptType = 'overall'; if(target.type === "Full Length") mQs = hMax.varc + hMax.dilr + hMax.qa; else if(target.type === "VARC Sectional") { mQs = hMax.varc; ptType = 'varc'; } else if(target.type === "DILR Sectional") { mQs = hMax.dilr; ptType = 'dilr'; } else if(target.type === "Quant Sectional") { mQs = hMax.qa; ptType = 'qa'; }
 
-            document.getElementById('kpi-score').innerText = tS; document.getElementById('kpi-percentile').innerText = `${predictPercentile(tS, ptType)} %ile`; document.getElementById('kpi-accuracy').innerText = tA > 0 ? `${((tC / tA) * 100).toFixed(1)}%` : '0%'; 
+            let ks = document.getElementById('kpi-score'); if(ks) ks.innerText = tS; 
+            let kp = document.getElementById('kpi-percentile'); if(kp) kp.innerText = `${predictPercentile(tS, ptType)} %ile`; 
+            let ka = document.getElementById('kpi-accuracy'); if(ka) ka.innerText = tA > 0 ? `${((tC / tA) * 100).toFixed(1)}%` : '0%'; 
             const attemptsEl = document.getElementById('kpi-attempts'); if(attemptsEl) attemptsEl.innerText = `${((tA / mQs) * 100).toFixed(1)}%`;
-            document.getElementById('display-mock-name').innerText = target.name; document.getElementById('display-mock-date').innerText = new Date(target.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); document.getElementById('display-remarks').innerText = target.remarks || "No notes.";
+            
+            let dn = document.getElementById('display-mock-name'); if(dn) dn.innerText = target.name; 
+            let dd = document.getElementById('display-mock-date'); if(dd) dd.innerText = new Date(target.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); 
+            let dr = document.getElementById('display-remarks'); if(dr) dr.innerText = target.remarks || "No notes.";
 
             if(chartInstances['overallBarChart']) chartInstances['overallBarChart'].destroy();
             chartInstances['overallBarChart'] = new Chart(document.getElementById('overallBarChart'), { type: 'bar', data: { labels: ['V', 'D', 'Q'], datasets: [{ data: [vS, dS, qS], backgroundColor: ['#4f46e5', '#10b981', '#f59e0b'], borderRadius: 4, barPercentage: 0.8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: {font:{size:9}} } } } });
@@ -1603,7 +1650,6 @@
             renderOverallHistoricalCharts(); 
             const openView = document.querySelector('.dash-view:not(.hidden)'); 
             if (openView && openView.classList.contains('sectional-panel')) { renderSectionalPanel(openView.getAttribute('data-section')); }
-            switchTab('dashboard-panel');
         }
 
         function switchDashboardView(view) {
@@ -1625,7 +1671,7 @@
         }
 
         function renderSectionalPanel(sec) {
-            if(!verifyIntegrity()) return; const container = document.getElementById(`${sec}-view`); if(!activeInspectedMock) return container.innerHTML = `<div class="p-8 sm:p-12 text-center text-slate-400 text-xs sm:text-sm font-medium">Select a mock to view analysis.</div>`;
+            if(!verifyIntegrity()) return; const container = document.getElementById(`${sec}-view`); if(!container) return; if(!activeInspectedMock) return container.innerHTML = `<div class="p-8 sm:p-12 text-center text-slate-400 text-xs sm:text-sm font-medium">Select a mock to view analysis.</div>`;
             const met = activeInspectedMock.metrics[sec], max = (activeInspectedMock.maxQsConfig || { varc: 24, dilr: 20, qa: 22 })[sec]; const score = (met.corr * 3) - (met.incMcq * 1), pTile = predictPercentile(score, sec); const names = { varc: "VARC", dilr: "DILR", qa: "Quant" }, colors = { varc: "text-indigo-600 bg-indigo-50", dilr: "text-emerald-600 bg-emerald-50", qa: "text-amber-600 bg-amber-50" };
             let warn = met.incMcq > 3 ? `<div class="mt-4 p-2 sm:p-3 bg-rose-50/80 border border-rose-100 rounded-xl text-rose-700 text-[10px] sm:text-xs font-semibold leading-tight font-sans">⚠️ Negative Penalty (-${met.incMcq}). Reduce MCQ guessing.</div>` : "";
 
@@ -1682,15 +1728,18 @@
         function switchTab(id, eventObj) {
             if(!verifyIntegrity()) return; 
             document.querySelectorAll('.panel-content').forEach(p => p.classList.add('hidden')); 
-            document.getElementById(id).classList.remove('hidden');
+            const tgt = document.getElementById(id);
+            if(tgt) tgt.classList.remove('hidden');
             
             const logbookSidebar = document.getElementById('logbook-sidebar'), mainContentArea = document.getElementById('main-content-area');
-            if (['profilizer-panel', 'profile-panel', 'pyq-panel', 'calendar-panel'].includes(id)) { 
-                logbookSidebar.classList.add('hidden'); 
-                mainContentArea.classList.remove('xl:col-span-3'); mainContentArea.classList.add('xl:col-span-4'); 
-            } else { 
-                logbookSidebar.classList.remove('hidden'); 
-                mainContentArea.classList.remove('xl:col-span-4'); mainContentArea.classList.add('xl:col-span-3'); 
+            if(logbookSidebar && mainContentArea) {
+                if (['profilizer-panel', 'profile-panel', 'pyq-panel', 'calendar-panel'].includes(id)) { 
+                    logbookSidebar.classList.add('hidden'); 
+                    mainContentArea.classList.remove('xl:col-span-3'); mainContentArea.classList.add('xl:col-span-4'); 
+                } else { 
+                    logbookSidebar.classList.remove('hidden'); 
+                    mainContentArea.classList.remove('xl:col-span-4'); mainContentArea.classList.add('xl:col-span-3'); 
+                }
             }
             
             if(id === 'calendar-panel') renderSchedule();
@@ -1715,8 +1764,6 @@
             }
         }
 
-        function clearAllData() { if(confirm('Warning: This will permanently delete your tracking history from this device. Proceed?')) { localStorage.removeItem('cat_analytics_logbook'); mockStorage = []; activeInspectedMock = null; populateMonthDropdown(); renderHistorySidebar(); switchTab('input-panel'); calculateLiveMetrics(); } }
-
         window.onload = () => {
             if(!verifyIntegrity()) return; Chart.defaults.font.family = "'Merriweather', serif"; Chart.defaults.font.style = 'normal';
             loadProfile(); initTargetCountdown(); populatePyqDropdowns(); renderInputTags(); renderMicroInputs(); updateAuthUIButton(); renderSchedule();
@@ -1731,7 +1778,7 @@
                     const openView = document.querySelector('.dash-view:not(.hidden)'); 
                     if (openView && openView.classList.contains('sectional-panel')) renderSectionalPanel(openView.getAttribute('data-section')); 
                     if (openView && openView.id === 'overall-view' && activeInspectedMock) loadAndInspectMock(activeInspectedMock.id); 
-                    if (!document.getElementById('profilizer-panel').classList.contains('hidden') && profilizerChartInstance) profilizerChartInstance.resize(); 
+                    if (document.getElementById('profilizer-panel') && !document.getElementById('profilizer-panel').classList.contains('hidden') && profilizerChartInstance) profilizerChartInstance.resize(); 
                 }, 250); 
             });
         };
