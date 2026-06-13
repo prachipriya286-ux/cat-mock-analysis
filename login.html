@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAT Analytics Studio | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Georgia', serif; background-color: #f8fafc; }
+        .pro-text { font-style: normal; }
+        input, select { border: 1px solid #e2e8f0; padding: 0.75rem; border-radius: 0.5rem; width: 100%; margin-bottom: 0.5rem; }
+        .form-action-btn { background-color: #1e293b; color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; width: 100%; transition: background 0.3s; }
+        .form-action-btn:hover { background-color: #334155; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+        <h1 class="text-3xl font-bold text-slate-900 text-center mb-2 pro-text">CAT Analytics Studio</h1>
+        <p class="text-slate-500 text-center mb-6 italic">Mock. Analyze. Improve. Repeat.</p>
+
+        <div class="flex gap-4 mb-6 border-b border-slate-200">
+            <button onclick="showPanel('login')" class="pb-2 font-bold border-b-2 border-indigo-600">Login</button>
+            <button onclick="showPanel('signup')" class="pb-2 text-slate-400">Sign Up</button>
+        </div>
+
+        <form id="loginPanel" class="space-y-4">
+            <input type="text" placeholder="Email or Contact No." class="w-full p-3 border rounded-lg" required>
+            <input type="password" placeholder="Password" class="w-full p-3 border rounded-lg" required>
+            <button type="submit" class="form-action-btn">Login</button>
+            <p class="text-sm text-center text-slate-500 cursor-pointer hover:underline">Forgot Password?</p>
+        </form>
+
+        <form id="signupPanel" class="space-y-3 hidden">
+            <input type="text" id="fname" placeholder="First Name *" class="w-full p-2 border rounded-lg" required>
+            <input type="text" id="lname" placeholder="Last Name" class="w-full p-2 border rounded-lg">
+            <input type="email" id="email" placeholder="Email *" class="w-full p-2 border rounded-lg" required>
+            <input type="tel" id="phone" placeholder="Contact No. *" class="w-full p-2 border rounded-lg" required>
+            <input type="date" id="dob" placeholder="D.O.B" class="w-full p-2 border rounded-lg">
+            <select id="gender" class="w-full p-2 border rounded-lg" required>
+                <option value="">Gender *</option>
+                <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+            <input type="text" id="state" placeholder="State of Residence" class="w-full p-2 border rounded-lg">
+            <select id="status" class="w-full p-2 border rounded-lg">
+                <option>Student</option><option>Working Professional</option>
+            </select>
+            <input type="password" id="password" placeholder="Set Password *" class="w-full p-2 border rounded-lg" required>
+            <button type="submit" class="form-action-btn bg-emerald-600 hover:bg-emerald-700">Register</button>
+        </form>
+    </div>
+
+    <div class="mt-8 text-center text-slate-400 text-sm pro-text">
+        <p>About Us | Privacy Policy</p>
+    </div>
+
+    <script>
+       const API_URL = "https://script.google.com/macros/s/AKfycbzrHntzISi-AT-CPXAXVOlWHJhkePY2e5C-lfEZ1e0KmyWQpvfJTL3LGjASlbMlhaQ/exec"; 
+
+
+
+    document.getElementById('signupPanel').addEventListener('submit', function(e) {
+
+        e.preventDefault();
+
+        const formData = {
+
+            fname: document.getElementById('fname').value,
+
+            lname: document.getElementById('lname').value,
+
+            email: document.getElementById('email').value,
+
+            phone: document.getElementById('phone').value,
+
+            dob: document.getElementById('dob').value,
+
+            gender: document.getElementById('gender').value,
+
+            state: document.getElementById('state').value,
+
+            status: document.getElementById('status').value,
+
+            password: document.getElementById('password').value
+
+        };
+
+
+
+        // Use fetch without 'no-cors' to allow response handling
+
+        fetch(API_URL, {
+
+            method: 'POST',
+
+            headers: { 'Content-Type': 'application/json' },
+
+            body: JSON.stringify(formData)
+
+        })
+
+        .then(res => res.json())
+
+        .then(data => {
+
+            alert("Registration successful!");
+
+            localStorage.setItem('loggedInUser', data.userId);
+
+            window.location.href = "dashboard.html"; // Ensure this file exists
+
+        })
+
+        .catch(err => alert("Error: Could not connect to database."));
+
+    });
+    </script>
+</body>
+</html>
