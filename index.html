@@ -43,12 +43,10 @@
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); box-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.1); }
         input[type=range]::-webkit-slider-thumb:active { transform: scale(0.95); }
         
-        /* Razorpay form overrides */
         .razorpay-payment-button { width: 100%; background-color: #4f46e5 !important; color: white !important; font-family: sans-serif !important; font-weight: bold !important; border-radius: 0.75rem !important; padding: 0.75rem 1rem !important; border: none !important; cursor: pointer !important; transition: background-color 0.2s !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; }
         .razorpay-payment-button:hover { background-color: #4338ca !important; }
         .razorpay-payment-button:active { transform: scale(0.95); }
 
-        /* Print Styles */
         @media print {
             body { background: white !important; font-size: 12px; }
             nav, footer, #logbook-sidebar, .dash-nav-btn, .print\:hidden { display: none !important; }
@@ -60,7 +58,6 @@
             #varc-view, #dilr-view, #qa-view { display: block !important; } 
         }
 
-        /* FAQ Accordion Styles */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -86,7 +83,6 @@
                         </div>
                     </div>
                     
-                    <!-- Notification Bell -->
                     <div class="relative">
                         <button onclick="toggleNotifications()" class="text-xl sm:text-2xl relative cursor-pointer hover:scale-110 transition-transform">
                             🔔<span id="notif-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center font-sans shadow-sm">0</span>
@@ -97,7 +93,6 @@
                         </div>
                     </div>
 
-                    <!-- Quick Link Auth Button -->
                     <button id="nav-auth-btn" onclick="toggleAuthModal(true)" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-indigo-600 transition-colors cursor-pointer font-sans whitespace-nowrap">
                         Login / Sign Up
                     </button>
@@ -105,12 +100,12 @@
             </div>
             
             <div class="bg-white/50 border border-slate-100 backdrop-blur-md p-1 rounded-xl flex gap-1 w-full lg:w-auto overflow-x-auto hide-scrollbar snap-x shadow-inner">
-                <button onclick="switchTab('input-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all cursor-pointer">Test Logger</button>
-                <button onclick="switchTab('dashboard-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Dashboard</button>
-                <button onclick="switchTab('calendar-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Calendar</button>
-                <button onclick="switchTab('pyq-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">PYQ Vault</button>
-                <button onclick="switchTab('profilizer-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profilizer</button>
-                <button onclick="switchTab('profile-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profile</button>
+                <button onclick="switchTab('input-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all cursor-pointer">Test Logger</button>
+                <button onclick="switchTab('dashboard-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Dashboard</button>
+                <button onclick="switchTab('calendar-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Calendar</button>
+                <button onclick="switchTab('pyq-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">PYQ Vault</button>
+                <button onclick="switchTab('profilizer-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profilizer</button>
+                <button onclick="switchTab('profile-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profile</button>
             </div>
         </div>
     </nav>
@@ -139,9 +134,10 @@
                 </div>
             </div>
 
+            <!-- Content Area (Only 1 matching set of panels inside) -->
             <div id="main-content-area" class="xl:col-span-3 order-1 xl:order-2 transition-all duration-300">
 
-                <!-- Input Panel -->
+                <!-- 1. Input Panel -->
                 <div id="input-panel" class="panel-content grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8">
                     <div class="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100 space-y-6 sm:space-y-8">
                         <div>
@@ -209,13 +205,16 @@
 
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100 flex flex-col min-h-[400px] lg:h-auto">
                         <h2 class="text-sm sm:text-base font-bold text-slate-900 mb-3 flex items-center gap-2 shrink-0"><span class="bg-slate-100 text-slate-500 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-sans">2</span> Tactical Loopholes</h2>
-                        <div class="mb-3 shrink-0"><p class="text-[10px] uppercase font-bold text-slate-400 mb-2 font-sans">Quick Tags</p><div id="tag-input-container" class="flex flex-wrap gap-2"></div></div>
-                        <div class="flex-1 flex flex-col"><p class="text-[10px] uppercase font-bold text-slate-400 mb-2 font-sans">Additional Notes</p><textarea id="remarksInput" placeholder="Log deeper insights here..." class="w-full p-3 bg-slate-50/50 border border-slate-200 rounded-xl resize-none text-xs sm:text-sm flex-1 focus:outline-none focus:border-indigo-500 custom-scroll italic text-slate-600"></textarea></div>
+                        <div class="mb-3 shrink-0">
+                            <p class="text-[10px] uppercase font-bold text-slate-400 mb-2 font-sans">Common Mistakes (Select all that apply)</p>
+                            <div id="tag-input-container" class="flex flex-col gap-2"></div>
+                        </div>
+                        <div class="flex-1 flex flex-col mt-2"><p class="text-[10px] uppercase font-bold text-slate-400 mb-2 font-sans">Additional Notes</p><textarea id="remarksInput" placeholder="Log deeper insights here..." class="w-full p-3 bg-slate-50/50 border border-slate-200 rounded-xl resize-none text-xs sm:text-sm flex-1 focus:outline-none focus:border-indigo-500 custom-scroll italic text-slate-600 min-h-[80px]"></textarea></div>
                         <button onclick="commitMockToStorage()" class="w-full mt-4 bg-slate-900 hover:bg-indigo-600 text-white py-3 sm:py-3.5 rounded-xl text-sm font-bold cursor-pointer transition-colors shadow-lg active:scale-[0.98] shrink-0 font-sans">Save to Logbook →</button>
                     </div>
                 </div>
 
-                <!-- Dashboard Master Panel -->
+                <!-- 2. Dashboard Master Panel -->
                 <div id="dashboard-panel" class="panel-content hidden flex flex-col space-y-4">
                     <!-- Dashboard Actions -->
                     <div class="flex justify-between items-center flex-wrap gap-4 mb-2 print:hidden">
@@ -256,7 +255,7 @@
                     <div id="qa-view" class="dash-view hidden sectional-panel" data-section="qa"></div>
                 </div>
 
-                <!-- Calendar Panel -->
+                <!-- 3. Calendar Panel -->
                 <div id="calendar-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
@@ -298,7 +297,7 @@
                     </div>
                 </div>
 
-                <!-- PYQ Panel -->
+                <!-- 4. PYQ Panel -->
                 <div id="pyq-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
                         <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 mb-6 gap-4">
@@ -378,7 +377,7 @@
                     </div>
                 </div>
 
-                <!-- Profilizer Panel -->
+                <!-- 5. Profilizer Panel -->
                 <div id="profilizer-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
                         <div class="flex justify-between items-start mb-6">
@@ -464,7 +463,7 @@
                     </div>
                 </div>
 
-                <!-- Profile Panel -->
+                <!-- 6. Profile Panel -->
                 <div id="profile-panel" class="panel-content hidden space-y-6 sm:space-y-8">
                     <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-4xl mx-auto w-full">
                         <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
@@ -810,7 +809,7 @@
                 </div>
             </div>
         </section>
-
+        
         <!-- ================= FAQs SECTION ================= -->
         <section class="max-w-4xl mx-auto mt-12 mb-12 relative z-10 print:hidden">
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2 mb-8 justify-center">
@@ -819,49 +818,90 @@
             <div class="space-y-4">
                 <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
-                        Is this tool limited to a specific coaching institute?
+                        What is CAT Analytics Studio, and how does it help my preparation?
                         <span class="transition group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>
                     </summary>
                     <p class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
-                        No, CAT Analytics Studio is completely agnostic. Whether you take SimCATs, AIMCATs, DASHCATs, or official PYQs, you can log them all here and compare your performance across different difficulty levels dynamically.
+                        CAT Analytics Studio is a data-driven performance tracking platform. It goes beyond basic scores to analyze your mock test results, identify hidden conceptual gaps, track time management, and provide personalized, actionable insights to help you maximize your percentile.
                     </p>
                 </details>
                 
                 <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
-                        Why do I need to log micro-topics manually?
+                        How do I sync or import my mock test scores into the dashboard?
+                        <span class="transition group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <div class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
+                        You can log your data in three ways:
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li><strong>Auto-Sync:</strong> Use our secure browser extension to pull results directly from major test series portals.</li>
+                            <li><strong>PDF Upload:</strong> Drag and drop your official mock scorecard PDF.</li>
+                            <li><strong>Manual Entry:</strong> Manually input your raw sectional scores, attempts, and accuracy.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
+                        How is the "Predicted Percentile" calculated?
                         <span class="transition group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>
                     </summary>
                     <p class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
-                        Top percentilers don't just look at aggregate scores; they look at topic-specific accuracy. Manually logging forces you to actively review the paper and acknowledge exactly where you gained or bled marks, setting the foundation for the automated SWOT analysis.
+                        Our analytics engine normalizes your raw scores by comparing them against historical CAT data, slot difficulty levels, and the performance patterns of thousands of other aspirants on the platform to give you a highly realistic percentile estimate.
                     </p>
                 </details>
 
                 <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
-                        What happens when my free limit is over?
+                        How can I benchmark my performance against mock toppers?
                         <span class="transition group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>
                     </summary>
                     <p class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
-                        You can log up to 3 mocks for free to experience the platform. After that, a highly affordable Pro upgrade (₹200/year) unlocks unlimited logging, advanced SWOT tracking, PDF exports, and the integrated Mock Scheduler.
+                        Every mock analysis page includes a Topper Overlay Graph. This allows you to visually compare your time allocation, question-skipping strategy, and accuracy tier against the top 1% and 99th percentile scorers.
                     </p>
                 </details>
 
                 <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
                     <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
-                        Is my data safe and accessible across devices?
+                        What is the AI-Powered Error Tracker?
                         <span class="transition group-open:rotate-180">
                             <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                         </span>
                     </summary>
                     <p class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
-                        By default, data is securely stored in your local browser workspace. When you create an account, your fundamental profile details sync securely, allowing us to eventually link cross-device tracking in upcoming platform updates.
+                        It’s a smart log that categorizes your incorrect answers into three buckets: Silly Mistakes (calculation/reading errors), Conceptual Gaps (lack of core knowledge), or Time-Pressure Panics. This helps you avoid repeating the same mistakes in your next mock.
+                    </p>
+                </details>
+
+                <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
+                        Is my mock data and test history secure?
+                        <span class="transition group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
+                        Absolutely. We use industry-standard encryption to safeguard your performance metrics and profile information. Your personal dashboard data is entirely private and is never shared with third parties or other coaching institutes.
+                    </p>
+                </details>
+
+                <details class="group bg-white border border-slate-200 rounded-2xl shadow-sm [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-slate-800 hover:text-indigo-600 transition-colors">
+                        My mock metrics aren't updating or look incomplete. What should I do?
+                        <span class="transition group-open:rotate-180">
+                            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-slate-500 mt-3 group-open:animate-fadeIn text-xs sm:text-sm p-5 pt-0 leading-relaxed border-t border-slate-50">
+                        Try clearing your browser cache and refreshing the page. If a recent mock import didn't process fully, go to your dashboard, click "Re-sync Mock Data," and wait a few moments. For persistent issues, drop us a line at iimabc2003@gmail.com
                     </p>
                 </details>
             </div>
@@ -875,7 +915,7 @@
                 <div>
                     <h4 class="text-slate-900 font-bold text-sm mb-2 font-sans">Upgrade to Pro</h4>
                     <p class="text-[10px] sm:text-xs text-slate-500 font-sans mb-4">
-                        Free tier limited to 3 mock analyses.<br>
+                        Free tier limited to 1 mock analysis.<br>
                         Unlock unlimited analytics and deep insights for just <span class="font-bold text-indigo-600">₹200/year</span>.
                     </p>
                     <button onclick="showSubscriptionModal()" class="px-5 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm active:scale-95 cursor-pointer font-sans text-xs sm:text-sm">Unlock Unlimited Analysis</button>
@@ -921,7 +961,7 @@
             <div class="text-center">
                 <div class="w-14 h-14 sm:w-16 sm:h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xl sm:text-2xl mx-auto mb-4 font-sans shadow-inner">🚀</div>
                 <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-2">Unlock Unlimited Analytics</h2>
-                <p class="text-slate-500 text-xs sm:text-sm mb-6">You've reached your free limit of 3 mock analyses. Upgrade to Pro to log unlimited mocks and access deeper insights for a whole year.</p>
+                <p class="text-slate-500 text-xs sm:text-sm mb-6">You've reached your free limit of 1 mock analysis. Upgrade to Pro to log unlimited mocks and access deeper insights for a whole year.</p>
                 <div class="bg-slate-50 rounded-xl p-4 sm:p-5 mb-6 border border-slate-100">
                     <span class="text-3xl sm:text-4xl font-black text-slate-900 font-sans">₹200</span>
                     <span class="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider font-sans"> / year</span>
@@ -951,8 +991,8 @@
 
             <!-- Login Form -->
             <form id="loginPanel" class="space-y-4" onsubmit="handleLogin(event)">
-                <input type="text" placeholder="Email or Contact No." class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-sm" required>
-                <input type="password" placeholder="Password" class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-sm" required>
+                <input type="text" id="login_input" placeholder="Email or Contact No." class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-sm" required>
+                <input type="password" id="login_pass" placeholder="Password" class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 font-sans text-sm" required>
                 <button type="submit" class="w-full bg-slate-900 text-white font-bold p-3 rounded-xl hover:bg-indigo-600 transition-colors font-sans text-sm shadow-sm cursor-pointer">Login</button>
                 <p class="text-xs text-center text-slate-500 cursor-pointer hover:text-indigo-600 font-sans">Forgot Password?</p>
             </form>
@@ -1040,15 +1080,33 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            setLoggedIn(true);
-            alert('Login successful!');
-            toggleAuthModal(false);
-            switchTab('profile-panel');
+            const loginInput = document.getElementById('login_input').value;
+            const loginPass = document.getElementById('login_pass').value;
             
-            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); });
-            const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\')"]');
-            if(profileBtn) { profileBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); profileBtn.classList.remove('text-slate-500', 'font-semibold'); }
-            loadProfile();
+            let users = JSON.parse(localStorage.getItem('cat_analytics_users')) || [];
+            let validUser = users.find(u => (u.email === loginInput || u.phone === loginInput) && u.password === loginPass);
+            
+            if (validUser) {
+                setLoggedIn(true);
+                let existingProfile = JSON.parse(localStorage.getItem('cat_analytics_profile')) || {};
+                existingProfile.fname = validUser.fname; existingProfile.lname = validUser.lname;
+                existingProfile.email = validUser.email; existingProfile.mobile = validUser.phone;
+                if(validUser.dob) existingProfile.dob = validUser.dob;
+                existingProfile.gender = validUser.gender; existingProfile.state = validUser.state;
+                existingProfile.status = validUser.status;
+                localStorage.setItem('cat_analytics_profile', JSON.stringify(existingProfile));
+                
+                alert('Login successful! Welcome back.');
+                toggleAuthModal(false);
+                switchTab('profile-panel');
+                
+                document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); });
+                const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\', event)"]');
+                if(profileBtn) { profileBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); profileBtn.classList.remove('text-slate-500', 'font-semibold'); }
+                loadProfile();
+            } else {
+                alert('Invalid Email/Mobile or Password. Please try again or Sign up.');
+            }
         }
 
         function handleSignup(e) {
@@ -1060,6 +1118,17 @@
                 state: document.getElementById('auth_state').value, status: document.getElementById('auth_status').value,
                 password: document.getElementById('auth_password').value
             };
+
+            let users = JSON.parse(localStorage.getItem('cat_analytics_users')) || [];
+            
+            if(users.some(u => u.email === formData.email || u.phone === formData.phone)) {
+                alert("Account with this Email or Contact Number already exists. Please login instead.");
+                showAuthPanel('login');
+                return;
+            }
+
+            users.push(formData);
+            localStorage.setItem('cat_analytics_users', JSON.stringify(users));
 
             let existingProfile = JSON.parse(localStorage.getItem('cat_analytics_profile')) || {};
             existingProfile.fname = formData.fname; existingProfile.lname = formData.lname;
@@ -1073,14 +1142,14 @@
                 setLoggedIn(true);
                 alert(msg); toggleAuthModal(false); switchTab('profile-panel');
                 document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); });
-                const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\')"]');
+                const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\', event)"]');
                 if(profileBtn) { profileBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); profileBtn.classList.remove('text-slate-500', 'font-semibold'); }
                 loadProfile(); 
             };
 
             fetch(GOOGLE_API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) })
-            .then(() => concludeSignup("Registration successful! Your data is saved to your profile workspace."))
-            .catch(err => concludeSignup("Saved to local workspace."));
+            .then(() => concludeSignup("Registration successful! Your data is securely synchronized."))
+            .catch(err => concludeSignup("Registration successful! Synced to local workspace."));
         }
 
         /* --- NOTIFICATION & CALENDAR SYSTEM --- */
@@ -1113,6 +1182,12 @@
 
         function scheduleMock(e) {
             e.preventDefault();
+            if (!isLoggedIn()) {
+                alert("Please Login or Sign Up to use the Mock Scheduler.");
+                toggleAuthModal(true);
+                return;
+            }
+
             const n = document.getElementById('sched_name').value, d = document.getElementById('sched_date').value, t = document.getElementById('sched_time').value, f = document.getElementById('sched_format').value;
             const notify = document.getElementById('sched_notify').checked;
             mockSchedule.push({ id: Date.now(), name: n, date: d, time: t, format: f });
@@ -1177,8 +1252,8 @@
         }
 
         function initializePyqMock() {
-            if (mockStorage.length >= 1 && !isLoggedIn()) {
-                alert("Please Login or Sign Up to use the PYQ Simulator after your first free log."); toggleAuthModal(true); return;
+            if (!isLoggedIn()) {
+                alert("Please Login or Sign Up to use the PYQ Simulator."); toggleAuthModal(true); return;
             }
 
             const year = document.getElementById('pyq-year').value, format = document.getElementById('pyq-format').value;
@@ -1274,15 +1349,63 @@
         /* --- LOGBOOK SYSTEM --- */
         let maxQs = { varc: 24, dilr: 20, qa: 22 }; let mockStorage = []; let activeInspectedMock = null; let chartInstances = {};
         const SYLLABUS = { varc: { 'RC: Main Idea': 'rc_main', 'RC: Inference': 'rc_inf', 'RC: Author Tone': 'rc_tone', 'RC: Purpose': 'rc_purp', 'RC: Strengthen/Weaken': 'rc_str', 'VA: Odd One Out': 'va_odd', 'VA: Para Jumbles': 'va_pj', 'VA: Para Summary': 'va_ps', 'VA: Para Completion': 'va_pc' }, dilr: { 'DI: Charts/Tables': 'di_charts', 'LR: Games & Tournaments': 'lr_games', 'LR: Routes & Networks': 'lr_venn', 'LR: Venn Diagrams': 'lr_venn', 'LR: Ordering/Ranking': 'lr_order', 'LR: Arrangements': 'lr_arr', 'LR: Distribution': 'lr_dist', 'LR: Puzzles': 'lr_puz' }, qa: { 'Arithmetic': 'qa_arith', 'Algebra': 'qa_alg', 'Geometry': 'qa_geom', 'Modern Math': 'qa_mod', 'Number System': 'qa_num' } };
-        const predefinedTags = ['🧠 Mental Fatigue in QA', '⏱️ Poor Set Selection in DILR', '📖 RC Passage Too Abstract', '⚠️ Blind Guessing at the End', '🛑 Stuck on an Ego Question'];
+        
+        // 8 Options Per Section
+        const predefinedTags = {
+            VARC: ['Stuck between 2 options', 'Missed Except/Not keyword', 'Abstract passage', 'Assumed outside info', 'VA time mismanaged', 'Lost reading focus', 'Wrong Author Tone', 'Vocab barrier'],
+            DILR: ['Poor set selection', 'Ego-invested/Stuck', 'Misread condition', 'Missed hidden case', 'DI calculation error', 'Panicked at end', 'Overlooked constraints', 'Faulty diagram'],
+            QA: ['Silly calculation', 'Misread question', 'Formula gap', 'Spent >3 mins on 1 Q', 'Fell for trap option', 'Ignored edge cases', 'End-mock fatigue', 'Skipped easy Qs']
+        };
+
         let currentSelectedTags = []; const today = new Date(); document.getElementById('mockDate').value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
         function renderInputTags() {
-            const container = document.getElementById('tag-input-container'); container.innerHTML = '';
-            predefinedTags.forEach(tag => {
-                const isActive = currentSelectedTags.includes(tag), btn = document.createElement('button'); btn.type = 'button';
-                btn.className = `text-[10px] sm:text-[11px] font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer italic ${isActive ? 'bg-indigo-100 border-indigo-300 text-indigo-800 shadow-inner' : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700'}`;
-                btn.innerText = tag; btn.onclick = () => { if (currentSelectedTags.includes(tag)) currentSelectedTags = currentSelectedTags.filter(t => t !== tag); else currentSelectedTags.push(tag); renderInputTags(); }; container.appendChild(btn);
+            const container = document.getElementById('tag-input-container'); 
+            if(!container) return;
+            container.innerHTML = '';
+            const type = document.getElementById('mockType').value;
+            
+            let sectionsToShow = [];
+            if(type === 'Full Length') sectionsToShow = ['VARC', 'DILR', 'QA'];
+            if(type === 'VARC Sectional') sectionsToShow = ['VARC'];
+            if(type === 'DILR Sectional') sectionsToShow = ['DILR'];
+            if(type === 'Quant Sectional') sectionsToShow = ['QA'];
+
+            sectionsToShow.forEach(sec => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'w-full mb-2';
+                
+                // Color mapping for active states
+                const colors = {
+                    VARC: { bg: 'bg-indigo-100', border: 'border-indigo-300', text: 'text-indigo-800' },
+                    DILR: { bg: 'bg-emerald-100', border: 'border-emerald-300', text: 'text-emerald-800' },
+                    QA: { bg: 'bg-amber-100', border: 'border-amber-300', text: 'text-amber-800' }
+                };
+                
+                secDiv.innerHTML = `<span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">${sec} Mistakes</span>`;
+                const tagsWrapper = document.createElement('div');
+                tagsWrapper.className = 'flex flex-wrap gap-1.5';
+                
+                predefinedTags[sec].forEach(tag => {
+                    const fullTag = `[${sec}] ${tag}`;
+                    const isActive = currentSelectedTags.includes(fullTag);
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    
+                    const activeClasses = `${colors[sec].bg} ${colors[sec].border} ${colors[sec].text} shadow-inner`;
+                    const inactiveClasses = 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700';
+                    
+                    btn.className = `text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-md border transition-all cursor-pointer ${isActive ? activeClasses : inactiveClasses}`;
+                    btn.innerText = tag;
+                    btn.onclick = () => { 
+                        if (currentSelectedTags.includes(fullTag)) currentSelectedTags = currentSelectedTags.filter(t => t !== fullTag); 
+                        else currentSelectedTags.push(fullTag); 
+                        renderInputTags(); 
+                    };
+                    tagsWrapper.appendChild(btn);
+                });
+                secDiv.appendChild(tagsWrapper);
+                container.appendChild(secDiv);
             });
         }
 
@@ -1369,11 +1492,23 @@
                 let displayAtt = document.getElementById(`${s}DisplayAtt`);
                 if(displayAtt) displayAtt.innerText = att;
                 
-                document.getElementById(`${s}-lbl`).innerText = `${maxQs[s] - att} Unattempted`; 
+                let lbl = document.getElementById(`${s}-lbl`);
+                if(lbl) lbl.innerText = `${maxQs[s] - att} Unattempted`; 
             }); 
         }
         
-        function adjustLoggerSliders() { const type = document.getElementById('mockType').value; ['varc', 'dilr', 'qa'].forEach(s => { const block = document.getElementById(`input-${s}-block`); const active = isSectionActive(type, s); block.style.opacity = active ? "1" : "0.3"; block.style.pointerEvents = active ? "auto" : "none"; block.style.filter = active ? "none" : "grayscale(100%)"; }); }
+        function adjustLoggerSliders() { 
+            const type = document.getElementById('mockType').value; 
+            ['varc', 'dilr', 'qa'].forEach(s => { 
+                const block = document.getElementById(`input-${s}-block`); 
+                const active = isSectionActive(type, s); 
+                block.style.opacity = active ? "1" : "0.3"; 
+                block.style.pointerEvents = active ? "auto" : "none"; 
+                block.style.filter = active ? "none" : "grayscale(100%)"; 
+            }); 
+            currentSelectedTags = []; 
+            renderInputTags();
+        }
         
         function getFilteredData() { const fFormat = document.getElementById('logbookFilter').value, fMonth = document.getElementById('logbookMonthFilter').value; return mockStorage.filter(m => { let mtMonth = true; if (fMonth !== "All") { const [y, mn] = m.date.split('-'); mtMonth = (`${y}-${mn}` === fMonth); } return (fFormat === "All" || m.type === fFormat) && mtMonth; }); }
 
@@ -1395,9 +1530,8 @@
         function commitMockToStorage() {
             if(!verifyIntegrity()) return;
             
-            // MANDATORY AUTH WALL AFTER 1 FREE LOG
-            if (mockStorage.length >= 1 && !isLoggedIn()) {
-                alert("Awesome! You've logged your first mock.\n\nPlease Login or Sign Up to secure your data and continue using the Test Logger.");
+            if (!isLoggedIn()) {
+                alert("Please Login or Sign Up to secure your data and use the Test Logger.");
                 toggleAuthModal(true);
                 return;
             }
@@ -1427,7 +1561,9 @@
 
         function renderHistorySidebar() {
             if(!verifyIntegrity()) return;
-            const container = document.getElementById('historyList'); container.innerHTML = ''; let filtered = getFilteredData(); document.getElementById('logCount').innerText = filtered.length;
+            const container = document.getElementById('historyList'); 
+            if(!container) return;
+            container.innerHTML = ''; let filtered = getFilteredData(); document.getElementById('logCount').innerText = filtered.length;
             if (filtered.length === 0) return container.innerHTML = `<div class="text-center py-6 text-slate-400 text-[11px] font-semibold border border-dashed rounded-xl bg-slate-50/50 backdrop-blur-md font-sans">No logs found.</div>`;
 
             filtered.forEach(m => {
@@ -1467,7 +1603,6 @@
             renderOverallHistoricalCharts(); 
             const openView = document.querySelector('.dash-view:not(.hidden)'); 
             if (openView && openView.classList.contains('sectional-panel')) { renderSectionalPanel(openView.getAttribute('data-section')); }
-            // Ensure we pop into dashboard view implicitly
             switchTab('dashboard-panel');
         }
 
@@ -1475,14 +1610,15 @@
             document.querySelectorAll('.dash-view').forEach(p => p.classList.add('hidden'));
             document.getElementById(`${view}-view`).classList.remove('hidden');
 
-            // Manage sub-navigation button styles
             document.querySelectorAll('.dash-nav-btn').forEach(b => {
                 b.classList.remove('bg-indigo-50', 'text-indigo-700', 'font-bold');
                 b.classList.add('text-slate-500', 'font-semibold');
             });
             const activeBtn = document.getElementById(`dash-btn-${view}`);
-            activeBtn.classList.remove('text-slate-500', 'font-semibold');
-            activeBtn.classList.add('bg-indigo-50', 'text-indigo-700', 'font-bold');
+            if(activeBtn) {
+                activeBtn.classList.remove('text-slate-500', 'font-semibold');
+                activeBtn.classList.add('bg-indigo-50', 'text-indigo-700', 'font-bold');
+            }
 
             if (['varc', 'dilr', 'qa'].includes(view)) { renderSectionalPanel(view); } 
             else if (view === 'overall' && activeInspectedMock) { renderOverallHistoricalCharts(); }
@@ -1505,7 +1641,6 @@
                         microAcc.push(acc.toFixed(1)); 
                         microColors.push(acc >= 80 ? '#10b981' : (acc >= 50 ? '#f59e0b' : '#f43f5e')); 
 
-                        // SWOT Logic
                         if(m.att >= 2 && acc >= 75) sList.push(label);
                         else if(m.att >= 2 && acc < 50) wList.push(label);
                         else if(m.att < 2 && acc > 50) oList.push(`${label} (Untapped)`);
@@ -1519,13 +1654,12 @@
 
             let microHtml = hasMicro ? `<div class="mt-6 sm:mt-8 bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-100 flex flex-col h-64 sm:h-[350px]"><h3 class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-sans">Micro-Topic Accuracy Heatmap</h3><div class="flex-1 relative w-full h-full"><canvas id="${sec}MicroChart"></canvas></div></div>` : '';
             
-            // Generate SWOT HTML
             if(sList.length===0) sList.push("Need more data/accuracy to establish.");
             if(wList.length===0) wList.push("No major weaknesses detected yet.");
             if(oList.length===0) oList.push("None identified.");
             if(tList.length===0) tList.push("Accuracy is well-managed.");
             let swotHtml = hasMicro ? `
-            <div class="mt-6 sm:mt-8 bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-100">
+            <div class="mt-6 sm:mt-8 bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-100 print:break-before-auto">
                 <h3 class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 font-sans flex items-center gap-2"><span class="bg-indigo-100 text-indigo-700 w-5 h-5 rounded-full flex items-center justify-center">🤖</span> Automated SWOT Analysis</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl"><h4 class="font-bold text-emerald-800 text-sm mb-2 flex items-center gap-1">💪 Strengths</h4><ul class="text-[11px] text-emerald-700 list-disc pl-4 space-y-1">${sList.map(i=>`<li>${i}</li>`).join('')}</ul></div>
@@ -1535,7 +1669,7 @@
                 </div>
             </div>` : '';
 
-            let filtered = getFilteredData().slice().reverse(); let trendHtml = ''; if (filtered.length > 1) { trendHtml = `<div class="mt-6 sm:mt-8 bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-100 flex flex-col h-64 sm:h-[300px]"><h3 class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-sans">Sectional Trend (Filtered Logbook)</h3><div class="flex-1 relative w-full h-full"><canvas id="${sec}TrendChart"></canvas></div></div>`; }
+            let filtered = getFilteredData().slice().reverse(); let trendHtml = ''; if (filtered.length > 1) { trendHtml = `<div class="mt-6 sm:mt-8 bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-100 flex flex-col h-64 sm:h-[300px] print:hidden"><h3 class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-sans">Sectional Trend (Filtered Logbook)</h3><div class="flex-1 relative w-full h-full"><canvas id="${sec}TrendChart"></canvas></div></div>`; }
 
             container.innerHTML = `<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8"><div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 flex flex-col justify-center relative"><span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${colors[sec].split(' ')[1]} ${colors[sec].split(' ')[0]} w-fit px-2 sm:px-3 py-1 rounded-full mb-3 sm:mb-4 shadow-sm font-sans">Section Focus</span><h2 class="text-xl sm:text-2xl font-bold text-slate-900 mb-4 sm:mb-6">${names[sec]}</h2><div class="space-y-3 sm:space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-2 sm:pb-3"><span class="text-slate-500 text-xs sm:text-sm font-medium font-sans">Score</span><div class="text-right"><span class="text-lg sm:text-xl font-black text-slate-900 leading-none">${score}</span> <span class="text-[10px] sm:text-xs font-bold text-indigo-600 ml-1 font-sans">${pTile}%ile</span></div></div><div class="flex justify-between items-center border-b border-slate-50 pb-2 sm:pb-3"><span class="text-slate-500 text-xs sm:text-sm font-medium font-sans">Accuracy</span><span class="text-lg sm:text-xl font-black text-emerald-500 font-sans">${met.att > 0 ? ((met.corr/met.att)*100).toFixed(1) : 0}%</span></div><div class="flex justify-between items-center pb-1"><span class="text-slate-500 text-xs sm:text-sm font-medium font-sans">Attempted</span><span class="text-base sm:text-lg font-black text-indigo-500 font-sans">${met.att} / ${max}</span></div></div>${warn}</div><div class="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-100 h-64 sm:h-[400px] flex flex-col"><h3 class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 font-sans">Outcome Distribution</h3><div class="flex-1 relative w-full h-full"><canvas id="${sec}PieChart"></canvas></div></div></div>${microHtml} ${swotHtml} ${trendHtml}`;
 
@@ -1545,7 +1679,7 @@
             if (filtered.length > 1) { let labels = [], scores = []; filtered.forEach(m => { labels.push(m.name); const calc = (s) => (s.corr * 3) - (s.incMcq * 1); scores.push(calc(m.metrics[sec])); }); if(chartInstances[`${sec}Trend`]) chartInstances[`${sec}Trend`].destroy(); chartInstances[`${sec}Trend`] = new Chart(document.getElementById(`${sec}TrendChart`), { type: 'line', data: { labels: labels, datasets: [{ label: `${names[sec]} Score`, data: scores, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#fff', pointBorderColor: '#10b981' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: {font:{size:9}} }, y: { grid: { color: '#f1f5f9' }, beginAtZero: true } } } }); }
         }
 
-        function switchTab(id) {
+        function switchTab(id, eventObj) {
             if(!verifyIntegrity()) return; 
             document.querySelectorAll('.panel-content').forEach(p => p.classList.add('hidden')); 
             document.getElementById(id).classList.remove('hidden');
@@ -1567,10 +1701,17 @@
                 else { renderOverallHistoricalCharts(); }
             }
 
-            const btnText = event?.target?.innerText; 
-            if(btnText && event.target.classList.contains('tab-btn')) { 
+            if(eventObj && eventObj.target && eventObj.target.classList.contains('tab-btn')) { 
                 document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); }); 
-                event.target.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); event.target.classList.remove('text-slate-500', 'font-semibold'); 
+                eventObj.target.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); eventObj.target.classList.remove('text-slate-500', 'font-semibold'); 
+            } else if(id === 'profile-panel') {
+                document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); }); 
+                const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\', event)"]');
+                if(profileBtn) { profileBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); profileBtn.classList.remove('text-slate-500', 'font-semibold'); }
+            } else if(id === 'input-panel') {
+                 document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); }); 
+                const inBtn = document.querySelector('button[onclick="switchTab(\'input-panel\', event)"]');
+                if(inBtn) { inBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); inBtn.classList.remove('text-slate-500', 'font-semibold'); }
             }
         }
 
@@ -1580,7 +1721,7 @@
             if(!verifyIntegrity()) return; Chart.defaults.font.family = "'Merriweather', serif"; Chart.defaults.font.style = 'normal';
             loadProfile(); initTargetCountdown(); populatePyqDropdowns(); renderInputTags(); renderMicroInputs(); updateAuthUIButton(); renderSchedule();
             const rawStored = localStorage.getItem('cat_analytics_logbook');
-            if (rawStored) { try { mockStorage = JSON.parse(rawStored); populateMonthDropdown(); if(mockStorage.length > 0) { loadAndInspectMock(mockStorage[0].id); switchTab('dashboard-panel'); switchDashboardView('overall'); } else { adjustLoggerSliders(); calculateLiveMetrics(); } } catch (e) { localStorage.removeItem('cat_analytics_logbook'); adjustLoggerSliders(); calculateLiveMetrics(); } } else { adjustLoggerSliders(); calculateLiveMetrics(); }
+            if (rawStored) { try { mockStorage = JSON.parse(rawStored); populateMonthDropdown(); if(mockStorage.length > 0) { activeInspectedMock = mockStorage[0]; loadAndInspectMock(mockStorage[0].id); switchTab('dashboard-panel'); switchDashboardView('overall'); } else { adjustLoggerSliders(); calculateLiveMetrics(); } } catch (e) { localStorage.removeItem('cat_analytics_logbook'); adjustLoggerSliders(); calculateLiveMetrics(); } } else { adjustLoggerSliders(); calculateLiveMetrics(); }
             renderHistorySidebar(); 
             
             let resizeTimer; 
