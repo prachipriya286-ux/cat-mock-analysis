@@ -48,39 +48,48 @@
 </head>
 <body class="text-slate-800">
 
-    <nav class="bg-white/70 backdrop-blur-xl border-b border-slate-100/50 sticky top-0 z-50 px-4 sm:px-6 py-3 sm:py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-3 sm:gap-4">
-            <div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
+    <nav class="bg-white/80 backdrop-blur-xl border-b border-slate-100/50 sticky top-0 z-50 px-4 sm:px-6 py-3 sm:py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            
+            <div class="flex items-center justify-between w-full lg:w-auto">
                 <div class="flex items-center gap-3">
-                    <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-bold text-lg shadow-md">Σ</div>
+                    <div class="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-bold text-lg shadow-md shrink-0">Σ</div>
                     <div>
                         <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 leading-tight">CAT Analytics Studio</h1>
                         <p class="text-[10px] sm:text-xs text-slate-500 font-medium tracking-wide uppercase">Multi-Dimensional Tracker</p>
                     </div>
                 </div>
-                <div class="bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-inner">
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-4 w-full lg:w-auto justify-between lg:justify-end">
+                <div class="bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-inner shrink-0">
                     <span class="text-base sm:text-lg">⏳</span>
                     <div class="text-right">
                         <span id="days-countdown" class="text-sm sm:text-base font-black text-amber-800 font-sans">--</span>
-                        <span class="text-[9px] sm:text-[10px] uppercase font-bold text-amber-600 tracking-wide font-sans block leading-none">Days to CAT 2026</span>
+                        <span class="text-[8px] sm:text-[10px] uppercase font-bold text-amber-600 tracking-wide font-sans block leading-none">Days to CAT</span>
                     </div>
                 </div>
+                <a href="#login-signup" class="bg-indigo-600 hover:bg-slate-900 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold font-sans shadow-md transition-all active:scale-95 flex items-center gap-2 whitespace-nowrap cursor-pointer">
+                    <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                    Login / Sign Up
+                </a>
             </div>
             
             <div class="bg-white/50 border border-slate-100 backdrop-blur-md p-1 rounded-xl flex gap-1 w-full lg:w-auto overflow-x-auto hide-scrollbar snap-x shadow-inner">
-                <button onclick="switchTab('input-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all cursor-pointer">Test Logger</button>
-                <button onclick="switchTab('overall-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Overall Trends</button>
-                <button onclick="switchTab('varc-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">VARC</button>
-                <button onclick="switchTab('dilr-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">DILR</button>
-                <button onclick="switchTab('qa-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Quant</button>
-                <button onclick="switchTab('pyq-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">PYQ Vault</button>
-                <button onclick="switchTab('profilizer-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profilizer</button>
-                <button onclick="switchTab('profile-panel')" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profile</button>
+                <button onclick="switchTab('input-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all cursor-pointer">Test Logger</button>
+                <button onclick="switchTab('overall-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Overall Trends</button>
+                <button onclick="switchTab('varc-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">VARC</button>
+                <button onclick="switchTab('dilr-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">DILR</button>
+                <button onclick="switchTab('qa-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Quant</button>
+                <button onclick="switchTab('pyq-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">PYQ Vault</button>
+                <button onclick="switchTab('profilizer-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profilizer</button>
+                <button onclick="switchTab('profile-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profile</button>
             </div>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-8 flex-1 w-full relative z-10">
+        
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 xl:gap-8">
             
             <div id="logbook-sidebar" class="xl:col-span-1 bg-white/80 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100 flex flex-col h-auto max-h-[45vh] xl:max-h-none xl:h-[calc(100vh-140px)] xl:sticky xl:top-24 z-10 order-2 xl:order-1 transition-all duration-300">
@@ -270,7 +279,7 @@
                                 <span class="bg-rose-100 text-rose-600 rounded-full w-10 h-10 flex items-center justify-center text-lg font-sans shadow-sm">🎯</span>
                                 MBA Profilizer
                             </h2>
-                            <div class="bg-rose-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md">Profile Locked till 11-Jun-2026</div>
+                            <div class="bg-rose-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md">Profile Locked</div>
                         </div>
 
                         <form id="profilizer-form" class="space-y-6" onsubmit="event.preventDefault(); assessProfile();">
@@ -302,7 +311,7 @@
                             <div>
                                 <h3 class="text-sm font-bold text-slate-900 mb-3 border-b border-slate-100 pb-2">12th Standard</h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                                    <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Board</label><input type="text" id="prof_12_board" placeholder="Telegana" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-rose-500"></div>
+                                    <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Board</label><input type="text" id="prof_12_board" placeholder="State Board" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-rose-500"></div>
                                     <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Discipline</label><input type="text" id="prof_12_stream" placeholder="Science" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-rose-500"></div>
                                     <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Year of Passing</label><input type="number" id="prof_12_year" placeholder="2020" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-rose-500"></div>
                                     <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Percentage</label><input type="number" id="prof_12_marks" step="0.01" placeholder="94.9" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-rose-500"></div>
@@ -370,13 +379,13 @@
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">First Name</label><input type="text" id="profile_fname" value="Prachi" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
-                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Last Name</label><input type="text" id="profile_lname" value="Priya" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
-                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Email Id</label><input type="email" id="profile_email" placeholder="e.g. prachi@example.com" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
+                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">First Name</label><input type="text" id="profile_fname" value="User" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
+                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Last Name</label><input type="text" id="profile_lname" value="" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
+                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Email Id</label><input type="email" id="profile_email" placeholder="e.g. user@example.com" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
                                 <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Mobile No.</label><input type="tel" id="profile_mobile" placeholder="+91" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
-                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Date of Birth</label><input type="date" id="profile_dob" value="2003-07-31" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500 font-sans cursor-pointer"></div>
+                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Date of Birth</label><input type="date" id="profile_dob" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500 font-sans cursor-pointer"></div>
                                 <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Gender</label><select id="profile_gender" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500 cursor-pointer"><option value="Female" selected>Female</option><option value="Male">Male</option><option value="Other">Other</option></select></div>
-                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">State of Residence</label><input type="text" id="profile_state" value="Delhi" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
+                                <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">State of Residence</label><input type="text" id="profile_state" value="" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500"></div>
                                 <div><label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-sans">Status</label><select id="profile_status" class="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm font-semibold focus:outline-none focus:border-indigo-500 cursor-pointer"><option value="Student">Student</option><option value="Working Professional" selected>Working Professional</option></select></div>
                             </div>
 
@@ -395,21 +404,21 @@
                                         <tbody class="text-xs font-semibold text-slate-700 divide-y divide-slate-100">
                                             <tr>
                                                 <td class="p-3 pl-4 text-slate-900 font-bold">Graduation</td>
-                                                <td class="p-2"><input type="number" id="acad_grad_year" placeholder="YYYY" value="2024" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
-                                                <td class="p-2"><input type="text" id="acad_grad_board" placeholder="University Name" value="Rani Lakshmi Bai Central Agricultural University" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg outline-none"></td>
-                                                <td class="p-2"><input type="number" id="acad_grad_marks" step="0.01" placeholder="00.00" value="81.0" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
+                                                <td class="p-2"><input type="number" id="acad_grad_year" placeholder="YYYY" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
+                                                <td class="p-2"><input type="text" id="acad_grad_board" placeholder="University Name" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg outline-none"></td>
+                                                <td class="p-2"><input type="number" id="acad_grad_marks" step="0.01" placeholder="00.00" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
                                             </tr>
                                             <tr>
                                                 <td class="p-3 pl-4 text-slate-900 font-bold">HSC / 12th</td>
-                                                <td class="p-2"><input type="number" id="acad_hsc_year" placeholder="YYYY" value="2020" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
-                                                <td class="p-2"><input type="text" id="acad_hsc_board" placeholder="State/Central Board" value="Telegana" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg outline-none"></td>
-                                                <td class="p-2"><input type="number" id="acad_hsc_marks" step="0.01" placeholder="00.00" value="94.9" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
+                                                <td class="p-2"><input type="number" id="acad_hsc_year" placeholder="YYYY" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
+                                                <td class="p-2"><input type="text" id="acad_hsc_board" placeholder="State/Central Board" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg outline-none"></td>
+                                                <td class="p-2"><input type="number" id="acad_hsc_marks" step="0.01" placeholder="00.00" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
                                             </tr>
                                             <tr>
                                                 <td class="p-3 pl-4 text-slate-900 font-bold">SSC / 10th</td>
-                                                <td class="p-2"><input type="number" id="acad_ssc_year" placeholder="YYYY" value="2018" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
-                                                <td class="p-2"><input type="text" id="acad_ssc_board" placeholder="State/Central Board" value="Central Board of Secondary Education (CBSE)" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg outline-none"></td>
-                                                <td class="p-2"><input type="number" id="acad_ssc_marks" step="0.01" placeholder="00.00" value="88.0" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
+                                                <td class="p-2"><input type="number" id="acad_ssc_year" placeholder="YYYY" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
+                                                <td class="p-2"><input type="text" id="acad_ssc_board" placeholder="State/Central Board" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg outline-none"></td>
+                                                <td class="p-2"><input type="number" id="acad_ssc_marks" step="0.01" placeholder="00.00" class="w-full px-2 py-1.5 bg-transparent border border-transparent hover:border-slate-200 focus:bg-white focus:border-indigo-500 rounded-lg font-sans outline-none"></td>
                                             </tr>
                                             <tr>
                                                 <td class="p-3 pl-4 text-slate-500">Post Graduation</td>
@@ -469,7 +478,7 @@
             </div>
         </div>
 
-        <section class="mt-12 mb-6">
+        <section class="mt-16 xl:mt-24 mb-6 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-slate-200/50 pb-4">
                 <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
@@ -479,100 +488,102 @@
                     <p class="text-xs sm:text-sm text-slate-500 mt-2 italic">How data-driven tracking translates to percentile jumps.</p>
                 </div>
                 <div class="mt-4 md:mt-0">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-sans bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">Trusted by 10,000+ Aspirants</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-sans bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">Trusted by 10,000+ Aspirants</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-indigo-200 transition-colors flex flex-col">
-                    <div class="absolute -top-3 -right-1 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-indigo-50 transition-colors">"</div>
-                    <div class="flex gap-1 mb-4 text-amber-400 text-xs">★★★★★</div>
+                
+                <div class="bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-indigo-200 transition-colors flex flex-col">
+                    <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-indigo-50 transition-colors">"</div>
+                    <div class="flex gap-1 mb-5 text-amber-400 text-xs sm:text-sm">★★★★★</div>
                     <p class="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-6 relative z-10 flex-1">
                         "The drill-down mock analysis fundamentally shifted my prep strategy. Instead of passively looking at raw scores, the logbook forces me to confront my micro-topic weaknesses. Being able to isolate my accuracy in 'RC: Author Tone' versus 'VA: Para Jumbles' feels like having a consultative mentor analyzing my exact tactical loopholes."
                     </p>
-                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
-                        <div class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs font-sans shadow-md">AK</div>
+                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-5 mt-auto">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">AK</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Aman K.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Final Year Undergrad</p>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 font-sans">Aman K.</h4>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-bold font-sans">Final Year Undergrad</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-emerald-200 transition-colors flex flex-col">
-                    <div class="absolute -top-3 -right-1 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-emerald-50 transition-colors">"</div>
-                    <div class="flex gap-1 mb-4 text-amber-400 text-xs">★★★★★</div>
+                <div class="bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-emerald-200 transition-colors flex flex-col">
+                    <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-emerald-50 transition-colors">"</div>
+                    <div class="flex gap-1 mb-5 text-amber-400 text-xs sm:text-sm">★★★★★</div>
                     <p class="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-6 relative z-10 flex-1">
-                        "Managing prep with a demanding job leaves zero room for inefficient study hours. As an IT professional, my time is my biggest bottleneck. The performance tracing features are incredibly focused—logging my exact errors immediately highlights what I need to fix over the weekend without the usual noise."
+                        "Managing prep with a demanding job leaves zero room for inefficient study hours. As an IT Professional based in Delhi, my time is my biggest bottleneck. The performance tracing features are incredibly focused—logging my exact errors immediately highlights what I need to fix over the weekend without the usual noise."
                     </p>
-                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
-                        <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs font-sans shadow-md">SR</div>
+                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-5 mt-auto">
+                        <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">SR</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Shruti R.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Software Engineer</p>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 font-sans">Shruti R.</h4>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-bold font-sans">Working Professional</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-rose-200 transition-colors flex flex-col">
-                    <div class="absolute -top-3 -right-1 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-rose-50 transition-colors">"</div>
-                    <div class="flex gap-1 mb-4 text-amber-400 text-xs">★★★★★</div>
+                <div class="bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-amber-200 transition-colors flex flex-col">
+                    <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-amber-50 transition-colors">"</div>
+                    <div class="flex gap-1 mb-5 text-amber-400 text-xs sm:text-sm">★★★★★</div>
                     <p class="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-6 relative z-10 flex-1">
-                        "I used to get massive anxiety looking at my overall Quant scores. The Micro-Topics logger changed the game for me. It showed me that I was actually getting 80% accuracy in Arithmetic, but losing all my marks to negative guessing in Algebra. It made the syllabus feel conquerable."
+                        "As a commerce grad terrified of Quant, the micro-topic tracker helped me isolate exact areas where I was losing marks. Instead of 'I'm bad at math', my problem became 'I need to review Number System formulas.' Breaking it down into visually traceable chunks completely cured my test anxiety."
                     </p>
-                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
-                        <div class="w-9 h-9 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-xs font-sans shadow-md">RM</div>
+                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-5 mt-auto">
+                        <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">VM</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Rahul M.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">B.A. Economics Grad</p>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 font-sans">Varun M.</h4>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-bold font-sans">B.Com Graduate</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-amber-200 transition-colors flex flex-col">
-                    <div class="absolute -top-3 -right-1 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-amber-50 transition-colors">"</div>
-                    <div class="flex gap-1 mb-4 text-amber-400 text-xs">★★★★★</div>
+                <div class="bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-rose-200 transition-colors flex flex-col">
+                    <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-rose-50 transition-colors">"</div>
+                    <div class="flex gap-1 mb-5 text-amber-400 text-xs sm:text-sm">★★★★★</div>
                     <p class="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-6 relative z-10 flex-1">
-                        "Taking a drop year means dealing with constant score plateaus. The PYQ Vault feature is incredible—it simulates the exact pressure of past papers while adapting the scoring constraints. It allowed me to trace why my DILR scores stalled and fix my set-selection strategy."
+                        "This is my second attempt at CAT. The 20-Year PYQ Simulation Suite is an absolute game-changer. Simulating the exact constraints of historical papers and immediately plotting the accuracy on the overall trend chart allowed me to see exactly where my prep differs from last year."
                     </p>
-                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
-                        <div class="w-9 h-9 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xs font-sans shadow-md">ST</div>
+                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-5 mt-auto">
+                        <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">ND</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Sneha T.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">CAT Dropper</p>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 font-sans">Nisha D.</h4>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-bold font-sans">Repeat Aspirant</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-cyan-200 transition-colors flex flex-col">
-                    <div class="absolute -top-3 -right-1 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-cyan-50 transition-colors">"</div>
-                    <div class="flex gap-1 mb-4 text-amber-400 text-xs">★★★★★</div>
+                <div class="bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-cyan-200 transition-colors flex flex-col">
+                    <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-cyan-50 transition-colors">"</div>
+                    <div class="flex gap-1 mb-5 text-amber-400 text-xs sm:text-sm">★★★★★</div>
                     <p class="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-6 relative z-10 flex-1">
-                        "As a CA, I rely heavily on ROI metrics. The Profilizer tool is brilliant—it mapped out exactly what raw score I needed to hit the 99.5%ile effort mark for the top IIMs based on my specific academic background. It completely removed the guesswork from my target-setting."
+                        "I'm prepping by myself from a Tier-3 city and couldn't afford a premium coaching institute's dashboard. This studio gives me the enterprise-level analytics I need. The 'Quick Tags' and vulnerability charts alone have saved me hundreds of hours of manual logging."
                     </p>
-                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
-                        <div class="w-9 h-9 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-xs font-sans shadow-md">VS</div>
+                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-5 mt-auto">
+                        <div class="w-10 h-10 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">PR</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Vikram S.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Chartered Accountant</p>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 font-sans">Priyanshu R.</h4>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-bold font-sans">Self-Prep Learner</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-violet-200 transition-colors flex flex-col">
-                    <div class="absolute -top-3 -right-1 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-violet-50 transition-colors">"</div>
-                    <div class="flex gap-1 mb-4 text-amber-400 text-xs">★★★★★</div>
+                <div class="bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm relative group hover:border-purple-200 transition-colors flex flex-col">
+                    <div class="absolute -top-4 -right-2 text-7xl text-slate-100 opacity-50 font-serif group-hover:text-purple-50 transition-colors">"</div>
+                    <div class="flex gap-1 mb-5 text-amber-400 text-xs sm:text-sm">★★★★★</div>
                     <p class="text-xs sm:text-sm text-slate-600 italic leading-relaxed mb-6 relative z-10 flex-1">
-                        "Coming from a state board and a tier-3 college, I felt I lacked the premium guidance others had. This analytics studio bridges that gap. Logging my 'Vulnerability Tags' after every mock taught me that 'Blind Guessing at the End' was destroying my percentiles. Truly a lifesaver."
+                        "The MBA Profilizer gave me a massive reality check. Seeing the exact percentile effort required against my past academics allowed me to set realistic targets. I stopped stressing about a 99.9%ile when I realized my diverse profile made me eligible for top non-IIMs at 96%ile."
                     </p>
-                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
-                        <div class="w-9 h-9 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-xs font-sans shadow-md">PD</div>
+                    <div class="flex items-center gap-3 border-t border-slate-100/80 pt-5 mt-auto">
+                        <div class="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">SS</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Priya D.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">BBA Student</p>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 font-sans">Sanya S.</h4>
+                            <p class="text-[9px] sm:text-[10px] text-slate-500 uppercase tracking-wider font-bold font-sans">Targeting Top 15 B-Schools</p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
         </main>
@@ -1427,7 +1438,7 @@
             }
         }
 
-        function switchTab(id) {
+        function switchTab(id, event) {
             if(!verifyIntegrity()) return;
             document.querySelectorAll('.panel-content').forEach(p => p.classList.add('hidden')); 
             document.getElementById(id).classList.remove('hidden');
