@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <!-- Quick Link Auth Button -->
-                    <button onclick="toggleAuthModal(true)" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-indigo-600 transition-colors cursor-pointer font-sans whitespace-nowrap">
+                    <button id="nav-auth-btn" onclick="toggleAuthModal(true)" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-indigo-600 transition-colors cursor-pointer font-sans whitespace-nowrap">
                         Login / Sign Up
                     </button>
                 </div>
@@ -749,6 +749,28 @@
         /* --- AUTHENTICATION CONTROLLER --- */
         const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbzrHntzISi-AT-CPXAXVOlWHJhkePY2e5C-lfEZ1e0KmyWQpvfJTL3LGjASlbMlhaQ/exec"; 
         
+        function isLoggedIn() { return localStorage.getItem('cat_analytics_auth') === 'true'; }
+        
+        function setLoggedIn(state) {
+            if(state) { localStorage.setItem('cat_analytics_auth', 'true'); } 
+            else { localStorage.removeItem('cat_analytics_auth'); }
+            updateAuthUIButton();
+        }
+
+        function updateAuthUIButton() {
+            const btn = document.getElementById('nav-auth-btn');
+            if(!btn) return;
+            if(isLoggedIn()) {
+                btn.innerText = "Log Out";
+                btn.onclick = () => { setLoggedIn(false); alert("Logged out successfully."); };
+                btn.className = "bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-sm hover:bg-rose-100 transition-colors cursor-pointer font-sans whitespace-nowrap";
+            } else {
+                btn.innerText = "Login / Sign Up";
+                btn.onclick = () => toggleAuthModal(true);
+                btn.className = "bg-slate-900 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-indigo-600 transition-colors cursor-pointer font-sans whitespace-nowrap";
+            }
+        }
+
         function toggleAuthModal(show) {
             const modal = document.getElementById('auth-modal');
             if (show) { modal.classList.remove('hidden'); showAuthPanel('login'); } 
@@ -771,6 +793,7 @@
 
         function handleLogin(e) {
             e.preventDefault();
+            setLoggedIn(true);
             alert('Login successful!');
             toggleAuthModal(false);
             switchTab('profile-panel');
@@ -804,6 +827,7 @@
 
             // Visual cleanups
             const concludeSignup = (msg) => {
+                setLoggedIn(true);
                 alert(msg); toggleAuthModal(false); switchTab('profile-panel');
                 document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'); b.classList.add('text-slate-500', 'font-semibold'); });
                 const profileBtn = document.querySelector('button[onclick="switchTab(\'profile-panel\')"]');
@@ -841,6 +865,12 @@
         }
 
         function initializePyqMock() {
+            if (mockStorage.length >= 1 && !isLoggedIn()) {
+                alert("Please Login or Sign Up to use the PYQ Simulator after your first free log.");
+                toggleAuthModal(true);
+                return;
+            }
+
             const year = document.getElementById('pyq-year').value, format = document.getElementById('pyq-format').value;
             const statusBanner = document.getElementById('pyq-banner-status');
             
@@ -905,7 +935,6 @@
             
             activePyqSession = null; document.getElementById('pyq-placeholder-view').classList.remove('hidden'); document.getElementById('pyq-running-view').classList.add('hidden');
             document.getElementById('pyq-banner-status').className = "bg-slate-100 text-slate-700 px-4 py-1.5 rounded-full text-xs font-bold font-sans"; document.getElementById('pyq-banner-status').innerText = "Ready Mode";
-            alert("Simulation completed successfully! Data mapped onto core trend logs.");
         }
 
         /* --- SUBSCRIPTION LOGIC --- */
@@ -1118,7 +1147,16 @@
 
         function commitMockToStorage() {
             if(!verifyIntegrity()) return;
+            
+            // MANDATORY AUTH WALL AFTER 1 FREE LOG
+            if (mockStorage.length >= 1 && !isLoggedIn()) {
+                alert("Awesome! You've logged your first mock.\n\nPlease Login or Sign Up to secure your data and continue using the Test Logger.");
+                toggleAuthModal(true);
+                return;
+            }
+
             if (mockStorage.length >= 3 && !hasValidSubscription()) { showSubscriptionModal(); return; }
+            
             const type = document.getElementById('mockType').value;
             const buildSec = (s) => { const act = isSectionActive(type, s); let micro = {}; if (act) { for (const id of Object.values(SYLLABUS[s])) { micro[id] = { att: parseInt(document.getElementById(`micro_${id}_att`).value) || 0, corr: parseInt(document.getElementById(`micro_${id}_corr`).value) || 0 }; } } return { att: act ? parseInt(document.getElementById(`${s}Att`).value) : 0, corr: act ? parseInt(document.getElementById(`${s}Corr`).value) : 0, incMcq: act ? parseInt(document.getElementById(`${s}IncMcq`).value) : 0, incTita: act ? parseInt(document.getElementById(`${s}IncTita`).value) : 0, micro: micro }; };
             const item = { id: 'mock_' + Date.now(), type: type, name: document.getElementById('mockName').value || 'Unnamed Mock', date: document.getElementById('mockDate').value, tags: [...currentSelectedTags], remarks: document.getElementById('remarksInput').value, maxQsConfig: { ...maxQs }, metrics: { varc: buildSec('varc'), dilr: buildSec('dilr'), qa: buildSec('qa') } };
@@ -1241,7 +1279,7 @@
 
         window.onload = () => {
             if(!verifyIntegrity()) return; Chart.defaults.font.family = "'Merriweather', serif"; Chart.defaults.font.style = 'normal';
-            loadProfile(); initTargetCountdown(); populatePyqDropdowns(); renderInputTags(); renderMicroInputs();
+            loadProfile(); initTargetCountdown(); populatePyqDropdowns(); renderInputTags(); renderMicroInputs(); updateAuthUIButton();
             const rawStored = localStorage.getItem('cat_analytics_logbook');
             if (rawStored) { try { mockStorage = JSON.parse(rawStored); populateMonthDropdown(); if(mockStorage.length > 0) { loadAndInspectMock(mockStorage[0].id); switchTab('dashboard-panel'); switchDashboardView('overall'); } else { adjustLoggerSliders(); calculateLiveMetrics(); } } catch (e) { localStorage.removeItem('cat_analytics_logbook'); adjustLoggerSliders(); calculateLiveMetrics(); } } else { adjustLoggerSliders(); calculateLiveMetrics(); }
             renderHistorySidebar(); 
