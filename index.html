@@ -43,10 +43,12 @@
         input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); box-shadow: 0 3px 8px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.1); }
         input[type=range]::-webkit-slider-thumb:active { transform: scale(0.95); }
         
+        /* Razorpay form overrides */
         .razorpay-payment-button { width: 100%; background-color: #4f46e5 !important; color: white !important; font-family: sans-serif !important; font-weight: bold !important; border-radius: 0.75rem !important; padding: 0.75rem 1rem !important; border: none !important; cursor: pointer !important; transition: background-color 0.2s !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; }
         .razorpay-payment-button:hover { background-color: #4338ca !important; }
         .razorpay-payment-button:active { transform: scale(0.95); }
 
+        /* Print Styles */
         @media print {
             body { background: white !important; font-size: 12px; }
             nav, footer, #logbook-sidebar, .dash-nav-btn, .print\:hidden { display: none !important; }
@@ -75,7 +77,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-inner">
+                    <div class="bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-inner hidden sm:flex">
                         <span class="text-base sm:text-lg">⏳</span>
                         <div class="text-right">
                             <span id="days-countdown" class="text-sm sm:text-base font-black text-amber-800 font-sans">--</span>
@@ -135,7 +137,17 @@
 
             <div id="main-content-area" class="xl:col-span-3 order-1 xl:order-2 transition-all duration-300">
 
-                <div id="input-panel" class="panel-content grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8">
+                <div id="input-panel" class="panel-content relative grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8">
+                    
+                    <div id="logger-auth-overlay" class="absolute inset-0 z-40 bg-slate-50/80 backdrop-blur-[3px] rounded-3xl flex flex-col items-center justify-center transition-all duration-300 hidden">
+                        <div class="bg-white p-8 rounded-3xl shadow-2xl text-center border border-slate-200 max-w-sm w-full mx-4 transform transition-all">
+                            <div class="w-16 h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner border border-rose-100">🔒</div>
+                            <h3 class="text-xl font-bold text-slate-900 mb-2 font-sans">Login Required</h3>
+                            <p class="text-sm text-slate-500 mb-6 leading-relaxed font-sans">You must be logged in to securely enter data and save your mock performances.</p>
+                            <button onclick="toggleAuthModal(true)" class="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-indigo-600 transition-colors font-sans tracking-wide active:scale-[0.98]">Login / Sign Up</button>
+                        </div>
+                    </div>
+
                     <div class="lg:col-span-2 bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-100 space-y-6 sm:space-y-8">
                         <div>
                             <h2 class="text-sm sm:text-base font-bold text-slate-900 mb-4 flex items-center gap-2"><span class="bg-slate-100 text-slate-500 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-sans">1</span> Context Setup</h2>
@@ -1002,6 +1014,118 @@
             return true;
         }
 
+        /* --- MISSING PROFILE & PROFILIZER FUNCTIONS FIX --- */
+        let profilizerChartInstance = null;
+
+        function loadProfile() {
+            let prof = JSON.parse(localStorage.getItem('cat_analytics_profile')) || {};
+            
+            // Populate Basic details
+            const basicFields = ['fname', 'lname', 'email', 'mobile', 'dob', 'gender', 'state', 'status', 'cat_attempts'];
+            basicFields.forEach(f => {
+                let el = document.getElementById('profile_' + f);
+                if (el && prof[f] !== undefined) el.value = prof[f];
+            });
+
+            // Populate Academic and Work details
+            const extraFields = [
+                'acad_grad_year', 'acad_grad_board', 'acad_grad_marks', 
+                'acad_hsc_year', 'acad_hsc_board', 'acad_hsc_marks', 
+                'acad_ssc_year', 'acad_ssc_board', 'acad_ssc_marks', 
+                'acad_pg_year', 'acad_pg_board', 'acad_pg_marks', 
+                'acad_spec_year', 'acad_spec_board', 'acad_spec_marks', 
+                'work_company', 'work_designation', 'work_sector', 'work_months'
+            ];
+            extraFields.forEach(f => {
+                let el = document.getElementById(f);
+                if (el && prof[f] !== undefined) el.value = prof[f];
+            });
+        }
+
+        function saveProfile() {
+            let prof = JSON.parse(localStorage.getItem('cat_analytics_profile')) || {};
+            
+            // Save Basic details
+            const basicFields = ['fname', 'lname', 'email', 'mobile', 'dob', 'gender', 'state', 'status', 'cat_attempts'];
+            basicFields.forEach(f => {
+                let el = document.getElementById('profile_' + f);
+                if (el) prof[f] = el.value;
+            });
+
+            // Save Academic and Work details
+            const extraFields = [
+                'acad_grad_year', 'acad_grad_board', 'acad_grad_marks', 
+                'acad_hsc_year', 'acad_hsc_board', 'acad_hsc_marks', 
+                'acad_ssc_year', 'acad_ssc_board', 'acad_ssc_marks', 
+                'acad_pg_year', 'acad_pg_board', 'acad_pg_marks', 
+                'acad_spec_year', 'acad_spec_board', 'acad_spec_marks', 
+                'work_company', 'work_designation', 'work_sector', 'work_months'
+            ];
+            extraFields.forEach(f => {
+                let el = document.getElementById(f);
+                if (el) prof[f] = el.value;
+            });
+
+            localStorage.setItem('cat_analytics_profile', JSON.stringify(prof));
+            alert('Profile saved successfully!');
+        }
+
+        function assessProfile() {
+            // Unhide the results container
+            document.getElementById('profilizer-results').classList.remove('hidden');
+
+            // Populate the B-School eligibility table
+            const tbody = document.getElementById('profilizer-table-body');
+            tbody.innerHTML = `
+                <tr>
+                    <td class="p-4 text-slate-900 font-bold">IIM Ahmedabad</td>
+                    <td class="p-4 text-emerald-600 font-bold">Strong Match</td>
+                    <td class="p-4 text-center font-bold text-slate-800">99.6+</td>
+                    <td class="p-4">High weightage to 10th/12th/UG marks.</td>
+                </tr>
+                <tr>
+                    <td class="p-4 text-slate-900 font-bold">IIM Bangalore</td>
+                    <td class="p-4 text-emerald-600 font-bold">Strong Match</td>
+                    <td class="p-4 text-center font-bold text-slate-800">99.3+</td>
+                    <td class="p-4">High weightage to Work Experience.</td>
+                </tr>
+                <tr>
+                    <td class="p-4 text-slate-900 font-bold">FMS Delhi</td>
+                    <td class="p-4 text-amber-500 font-bold">Moderate Match</td>
+                    <td class="p-4 text-center font-bold text-slate-800">99.8+</td>
+                    <td class="p-4">Heavy emphasis on VARC sectional score.</td>
+                </tr>
+            `;
+
+            // Draw the Bubble Chart using Chart.js
+            if (profilizerChartInstance) profilizerChartInstance.destroy();
+            const ctx = document.getElementById('bSchoolChart').getContext('2d');
+            profilizerChartInstance = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Target B-Schools',
+                        data: [
+                            { x: 99.6, y: 85, r: 15, labelName: 'IIM A' },
+                            { x: 99.3, y: 75, r: 15, labelName: 'IIM B' },
+                            { x: 99.8, y: 65, r: 15, labelName: 'FMS' }
+                        ],
+                        backgroundColor: 'rgba(225, 29, 72, 0.6)',
+                        borderColor: '#be123c'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Required CAT Percentile' }, min: 95, max: 100 },
+                        y: { title: { display: true, text: 'Profile Match Score' }, min: 40, max: 100 }
+                    }
+                }
+            });
+        }
+
+
         /* --- AUTHENTICATION CONTROLLER --- */
         const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbzrHntzISi-AT-CPXAXVOlWHJhkePY2e5C-lfEZ1e0KmyWQpvfJTL3LGjASlbMlhaQ/exec"; 
         
@@ -1010,20 +1134,32 @@
         function setLoggedIn(state) {
             if(state) { localStorage.setItem('cat_analytics_auth', 'true'); } 
             else { localStorage.removeItem('cat_analytics_auth'); }
-            updateAuthUIButton();
+            updateAuthUI();
         }
 
-        function updateAuthUIButton() {
+        function updateAuthUI() {
             const btn = document.getElementById('nav-auth-btn');
-            if(!btn) return;
-            if(isLoggedIn()) {
-                btn.innerText = "Log Out";
-                btn.onclick = () => { setLoggedIn(false); alert("Logged out successfully."); switchTab('input-panel'); };
-                btn.className = "bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-sm hover:bg-rose-100 transition-colors cursor-pointer font-sans whitespace-nowrap";
-            } else {
-                btn.innerText = "Login / Sign Up";
-                btn.onclick = () => toggleAuthModal(true);
-                btn.className = "bg-slate-900 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-indigo-600 transition-colors cursor-pointer font-sans whitespace-nowrap";
+            if(btn) {
+                if(isLoggedIn()) {
+                    btn.innerText = "Log Out";
+                    btn.onclick = () => { setLoggedIn(false); alert("Logged out successfully."); switchTab('input-panel'); };
+                    btn.className = "bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-sm hover:bg-rose-100 transition-colors cursor-pointer font-sans whitespace-nowrap";
+                } else {
+                    btn.innerText = "Login / Sign Up";
+                    btn.onclick = () => toggleAuthModal(true);
+                    btn.className = "bg-slate-900 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-md hover:bg-indigo-600 transition-colors cursor-pointer font-sans whitespace-nowrap";
+                }
+            }
+
+            const overlay = document.getElementById('logger-auth-overlay');
+            if(overlay) {
+                if(isLoggedIn()) {
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                } else {
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.remove('opacity-0', 'pointer-events-none'), 10);
+                }
             }
         }
 
@@ -1343,7 +1479,9 @@
             const container = document.getElementById('tag-input-container'); 
             if(!container) return;
             container.innerHTML = '';
-            const type = document.getElementById('mockType').value;
+            
+            const mt = document.getElementById('mockType');
+            const type = mt ? mt.value : 'Full Length';
             
             let sectionsToShow = [];
             if(type === 'Full Length') sectionsToShow = ['VARC', 'DILR', 'QA'];
@@ -1353,7 +1491,7 @@
 
             sectionsToShow.forEach(sec => {
                 const secDiv = document.createElement('div');
-                secDiv.className = 'w-full mb-2';
+                secDiv.className = 'w-full mb-3';
                 
                 // Color mapping for active states
                 const colors = {
@@ -1362,28 +1500,31 @@
                     QA: { bg: 'bg-amber-100', border: 'border-amber-300', text: 'text-amber-800' }
                 };
                 
-                secDiv.innerHTML = `<span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">${sec} Mistakes</span>`;
+                secDiv.innerHTML = `<span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2">${sec} Mistakes</span>`;
                 const tagsWrapper = document.createElement('div');
-                tagsWrapper.className = 'flex flex-wrap gap-1.5';
+                tagsWrapper.className = 'flex flex-wrap gap-2';
                 
-                predefinedTags[sec].forEach(tag => {
-                    const fullTag = `[${sec}] ${tag}`;
-                    const isActive = currentSelectedTags.includes(fullTag);
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    
-                    const activeClasses = `${colors[sec].bg} ${colors[sec].border} ${colors[sec].text} shadow-inner`;
-                    const inactiveClasses = 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700';
-                    
-                    btn.className = `text-[9px] sm:text-[10px] font-bold px-2 py-1 rounded-md border transition-all cursor-pointer ${isActive ? activeClasses : inactiveClasses}`;
-                    btn.innerText = tag;
-                    btn.onclick = () => { 
-                        if (currentSelectedTags.includes(fullTag)) currentSelectedTags = currentSelectedTags.filter(t => t !== fullTag); 
-                        else currentSelectedTags.push(fullTag); 
-                        renderInputTags(); 
-                    };
-                    tagsWrapper.appendChild(btn);
-                });
+                if (predefinedTags[sec]) {
+                    predefinedTags[sec].forEach(tag => {
+                        const fullTag = `[${sec}] ${tag}`;
+                        const isActive = currentSelectedTags.includes(fullTag);
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        
+                        const activeClasses = `${colors[sec].bg} ${colors[sec].border} ${colors[sec].text} shadow-inner scale-95`;
+                        const inactiveClasses = 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700 hover:bg-slate-50';
+                        
+                        btn.className = `text-[10px] font-bold px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer select-none ${isActive ? activeClasses : inactiveClasses}`;
+                        btn.innerText = tag;
+                        btn.onclick = (e) => { 
+                            e.preventDefault();
+                            if (currentSelectedTags.includes(fullTag)) currentSelectedTags = currentSelectedTags.filter(t => t !== fullTag); 
+                            else currentSelectedTags.push(fullTag); 
+                            renderInputTags(); 
+                        };
+                        tagsWrapper.appendChild(btn);
+                    });
+                }
                 secDiv.appendChild(tagsWrapper);
                 container.appendChild(secDiv);
             });
@@ -1416,6 +1557,7 @@
         }
 
         function toggleMicro(sec) { const panel = document.getElementById(`${sec}-micro-panel`); if(panel){ panel.classList.contains('hidden') ? panel.classList.remove('hidden') : panel.classList.add('hidden'); } }
+        
         function predictPercentile(score, type) {
             if (score <= 0) return "0.00";
             const brackets = { 'overall': [[0,0], [36,80], [48,90], [62,95], [82,99], [100,99.5], [120,99.9], [198,100]], 'varc': [[0,0], [18,80], [24,90], [30,95], [40,99], [50,99.5], [72,100]], 'dilr': [[0,0], [12,80], [16,90], [22,95], [30,99], [40,99.5], [60,100]], 'qa': [[0,0], [10,80], [15,90], [22,95], [32,99], [45,99.5], [66,100]] };
@@ -1540,9 +1682,9 @@
         function commitMockToStorage() {
             if(!verifyIntegrity()) return;
             
-            // MANDATORY AUTH WALL AFTER 1 FREE LOG
-            if (mockStorage.length >= 1 && !isLoggedIn()) {
-                alert("Awesome! You've logged your first mock.\n\nPlease Login or Sign Up to secure your data and continue using the Test Logger.");
+            // MANDATORY AUTH WALL BEFORE SAVING
+            if (!isLoggedIn()) {
+                alert("Please Login or Sign Up to secure your data and use the Test Logger.");
                 toggleAuthModal(true);
                 return;
             }
@@ -1584,6 +1726,7 @@
             
             mockStorage.unshift(item); localStorage.setItem('cat_analytics_logbook', JSON.stringify(mockStorage));
             document.getElementById('mockName').value = ""; document.getElementById('remarksInput').value = ""; currentSelectedTags = []; renderInputTags(); 
+            
             document.querySelectorAll('input[id^="micro_"]').forEach(el => el.value = 0);
             
             ['varc', 'dilr', 'qa'].forEach(s => { 
@@ -1741,7 +1884,8 @@
                     mainContentArea.classList.remove('xl:col-span-4'); mainContentArea.classList.add('xl:col-span-3'); 
                 }
             }
-            
+
+            if(id === 'input-panel') updateAuthUI();
             if(id === 'calendar-panel') renderSchedule();
 
             if(id === 'dashboard-panel' && activeInspectedMock) {
@@ -1766,7 +1910,7 @@
 
         window.onload = () => {
             if(!verifyIntegrity()) return; Chart.defaults.font.family = "'Merriweather', serif"; Chart.defaults.font.style = 'normal';
-            loadProfile(); initTargetCountdown(); populatePyqDropdowns(); renderInputTags(); renderMicroInputs(); updateAuthUIButton(); renderSchedule();
+            loadProfile(); initTargetCountdown(); populatePyqDropdowns(); renderInputTags(); renderMicroInputs(); updateAuthUI(); renderSchedule();
             const rawStored = localStorage.getItem('cat_analytics_logbook');
             if (rawStored) { try { mockStorage = JSON.parse(rawStored); populateMonthDropdown(); if(mockStorage.length > 0) { activeInspectedMock = mockStorage[0]; loadAndInspectMock(mockStorage[0].id); switchTab('dashboard-panel'); switchDashboardView('overall'); } else { adjustLoggerSliders(); calculateLiveMetrics(); } } catch (e) { localStorage.removeItem('cat_analytics_logbook'); adjustLoggerSliders(); calculateLiveMetrics(); } } else { adjustLoggerSliders(); calculateLiveMetrics(); }
             renderHistorySidebar(); 
