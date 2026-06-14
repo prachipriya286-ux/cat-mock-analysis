@@ -678,12 +678,127 @@
             </div>
         </section>
 
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans</title>
+    <style>
+        /* Base Styling */
+        body { font-family: 'Merriweather', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 0; color: #334155; }
+        .pricing-section { max-width: 1150px; margin: 60px auto; padding: 20px; }
+        .pricing-header { text-align: center; margin-bottom: 50px; }
+        .pricing-header h2 { font-size: 2.8rem; color: #0f172a; margin-bottom: 15px; font-weight: 800; letter-spacing: -0.5px; }
+        .pricing-quote { font-family: Georgia, 'Times New Roman', Times, serif; font-style: italic; font-size: 1.35rem; color: #475569; max-width: 650px; margin: 0 auto; line-height: 1.6; }
+        .table-container { overflow-x: auto; border-radius: 16px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08); background: #ffffff; }
+        .pricing-table { width: 100%; border-collapse: collapse; text-align: center; }
+        .pricing-table th, .pricing-table td { padding: 24px 20px; border-bottom: 1px solid #e2e8f0; }
+        .pricing-table td:first-child, .pricing-table th:first-child { text-align: left; font-weight: 600; color: #334155; font-size: 1.05rem; }
+        
+        /* Badge Styling */
+        .badge {
+            background: #6366f1;
+            color: white;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .plan-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .plan-price { font-size: 2.8rem; font-weight: 800; color: #0f172a; }
+        
+        .col-pro { background-color: #f0f4ff; border-left: 1px solid #e0e7ff; border-right: 1px solid #e0e7ff; }
+        th.col-pro { border-top: 5px solid #6366f1; background-color: #eef2ff; }
+        .col-elite { background-color: #f8fafc; }
+        th.col-elite { border-top: 5px solid #0f172a; }
+        
+        .check { color: #10b981; font-weight: bold; font-size: 1.3rem; }
+        .cross { color: #cbd5e1; font-weight: bold; font-size: 1.3rem; }
+        
+        .btn-container { padding-top: 35px !important; padding-bottom: 35px !important; vertical-align: middle; height: 120px; }
+        .btn { display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; cursor: pointer; width: 85%; box-sizing: border-box; text-align: center; }
+        .btn-free { background: #ffffff; border: 2px solid #cbd5e1; color: #475569; }
+        .btn-pro { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: #ffffff; border: none; }
+        .btn-elite { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; border: none; }
+        
+        .checkout-actions { display: none; flex-direction: column; align-items: center; gap: 10px; }
+        .btn-cancel { background: transparent; border: 1px solid transparent; color: #64748b; font-size: 0.85rem; cursor: pointer; padding: 6px 16px; border-radius: 20px; }
+        .btn-cancel:hover { background: #e2e8f0; color: #0f172a; }
+    </style>
+</head>
+<body>
+
+<section class="pricing-section">
+    <div class="pricing-header">
+        <h2>Start Analyzing Today</h2>
+        <p class="pricing-quote">"The difference between 85%ile and 99%ile is often hidden in the analysis."</p>
+    </div>
+
+    <div class="table-container">
+        <table class="pricing-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%; background: #ffffff;">Features</th>
+                    <th class="col-free" style="width: 25%;"><div class="plan-name" style="color: #64748b; margin-top:20px;">Free</div><div class="plan-price">₹0</div></th>
+                    <th class="col-pro" style="width: 25%;">
+                        <div class="badge">Most Popular</div>
+                        <div class="plan-name" style="color: #6366f1;">Pro</div>
+                        <div class="plan-price">₹259</div>
+                    </th>
+                    <th class="col-elite" style="width: 25%;"><div class="plan-name" style="color: #0f172a; margin-top:20px;">Elite</div><div class="plan-price">₹499</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="background: #ffffff;">Mock Analysis</td>
+                    <td class="col-free">3 Mocks</td>
+                    <td class="col-pro">30 Full-Length<br>& 30 Sectionals</td>
+                    <td class="col-elite">Unlimited Full-Length<br>& Sectionals</td>
+                </tr>
+                <tr><td>Mock Scheduler</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+                <tr><td>Daily- Weekly - Monthly Planner</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+                <tr><td>MBA Profilizer</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+                <tr><td>PYQ Vault</td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td></tr>
+                <tr>
+                    <td style="background: #ffffff;" class="btn-container"></td>
+                    <td class="col-free btn-container"><a href="/dashboard" class="btn btn-free">Get Started</a></td>
+                    <td class="col-pro btn-container">
+                        <div id="pro-initial"><button onclick="togglePaymentState('pro', true)" class="btn btn-pro">Upgrade to Pro/Elite </button></div>
+                        <div id="pro-checkout" class="checkout-actions">
+                            <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_T14scMntU929n9" async></script></form>
+                            <button onclick="togglePaymentState('pro', false)" class="btn-cancel">Maybe Later</button>
+                        </div>
+                    </td>
+                    <td class="col-elite btn-container">
+                        <div id="elite-initial"><button onclick="togglePaymentState('elite', true)" class="btn btn-elite">Go Elite</button></div>
+                        <div id="elite-checkout" class="checkout-actions">
+                            <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_T1560sINDMrtgO" async></script></form>
+                            <button onclick="togglePaymentState('elite', false)" class="btn-cancel">Maybe Later</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    function togglePaymentState(plan, showCheckout) {
+        document.getElementById(plan + '-initial').style.display = showCheckout ? 'none' : 'block';
+        document.getElementById(plan + '-checkout').style.display = showCheckout ? 'flex' : 'none';
+    }
+</script> 
+      
         <section class="max-w-7xl mx-auto mt-12 mb-8 relative z-10 print:hidden">
             <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-slate-200/50 pb-4">
                 <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
                         <span class="bg-indigo-100 text-indigo-600 rounded-full w-8 h-8 flex items-center justify-center text-sm shadow-sm">💬</span>
-                        Aspirant Insights
+                        Impact Stories
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-500 mt-2 italic">How data-driven tracking translates to percentile jumps.</p>
                 </div>
@@ -705,7 +820,7 @@
                         <div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">AK</div>
                         <div>
                             <h4 class="text-xs font-bold text-slate-900 font-sans">Aman K.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Final Year Undergrad</p>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Final Year Undergrad - Converted IIML</p>
                         </div>
                     </div>
                 </div>
@@ -721,8 +836,8 @@
                     <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
                         <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">SR</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Shruti R.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Working Professional</p>
+                            <h4 class="text-xs font-bold text-slate-900 font-sans">Harsh R.</h4>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Working Professional- Converted IIMB</p>
                         </div>
                     </div>
                 </div>
@@ -739,7 +854,7 @@
                         <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">PS</div>
                         <div>
                             <h4 class="text-xs font-bold text-slate-900 font-sans">Priya S.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">CA Aspirant</p>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">CA - Converted IIMA</p>
                         </div>
                     </div>
                 </div>
@@ -755,8 +870,8 @@
                     <div class="flex items-center gap-3 border-t border-slate-100/80 pt-4 mt-auto">
                         <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">RM</div>
                         <div>
-                            <h4 class="text-xs font-bold text-slate-900 font-sans">Rahul M.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Repeat Aspirant</p>
+                            <h4 class="text-xs font-bold text-slate-900 font-sans">Srinath P.</h4>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Repeater - Converted IIM Sirmaur </p>
                         </div>
                     </div>
                 </div>
@@ -773,7 +888,7 @@
                         <div class="w-10 h-10 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">VT</div>
                         <div>
                             <h4 class="text-xs font-bold text-slate-900 font-sans">Vikram T.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">BA (Hons) Student</p>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">BA (Hons)- Converted IITD</p>
                         </div>
                     </div>
                 </div>
@@ -790,7 +905,7 @@
                         <div class="w-10 h-10 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-sm font-sans shadow-md">NJ</div>
                         <div>
                             <h4 class="text-xs font-bold text-slate-900 font-sans">Neha J.</h4>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Freelance Designer</p>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-wider font-bold font-sans">Freelance Designer - Converted IIM Rohtak</p>
                         </div>
                     </div>
                 </div>
@@ -901,7 +1016,7 @@
                 <div>
                     <h4 class="text-slate-900 font-bold text-sm mb-2 font-sans">Upgrade to Pro</h4>
                     <p class="text-[10px] sm:text-xs text-slate-500 font-sans mb-4">
-                        Free tier limited to 1 mock analysis.<br>
+                        Free tier limited to 3 mock analysis.<br>
                         Unlock unlimited analytics and deep insights for just <span class="font-bold text-indigo-600">₹259/year</span>.
                     </p>
                     <button onclick="showSubscriptionModal()" class="px-5 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm active:scale-95 cursor-pointer font-sans text-xs sm:text-sm">Unlock Unlimited Analysis</button>
