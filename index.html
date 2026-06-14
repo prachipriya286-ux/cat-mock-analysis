@@ -105,7 +105,7 @@
                 <button onclick="switchTab('input-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-bold rounded-lg bg-white text-slate-900 shadow-sm transition-all cursor-pointer">Test Logger</button>
                 <button onclick="switchTab('dashboard-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Dashboard</button>
                 <button onclick="switchTab('calendar-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Calendar</button>
-                <button onclick="switchTab('pyq-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Planner</button>
+                <button onclick="switchTab('planner-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Planner</button>
                 <button onclick="switchTab('pyq-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">PYQ Vault</button>
                 <button onclick="switchTab('profilizer-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profilizer</button>
                 <button onclick="switchTab('profile-panel', event)" class="tab-btn snap-start whitespace-nowrap px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-slate-500 hover:text-slate-900 transition-all cursor-pointer">Profile</button>
@@ -259,42 +259,966 @@
                 </div>
 
                 <div id="calendar-panel" class="panel-content hidden space-y-6 sm:space-y-8">
-                    <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 sm:p-8 shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
-                        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
-                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-3">
-                                <span class="bg-sky-100 text-sky-600 rounded-full w-10 h-10 flex items-center justify-center text-lg font-sans shadow-sm">📅</span>
-                                Mock Scheduler
-                            </h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Mock Scheduler | Mobile Optimized</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Custom Glassmorphism utility */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Tooltip behavior for mobile */
+        @media (max-width: 768px) {
+            .calendar-tooltip { display: none !important; } /* Hide complex tooltips on small mobile */
+        }
+    </style>
+</head>
+<body class="bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-indigo-100 via-fuchsia-50 to-cyan-100 min-h-screen text-slate-800 antialiased p-3 md:p-8 pb-20" onload="initScheduler()">
+
+    <div class="max-w-6xl mx-auto space-y-6 md:space-y-10">
+        
+        <div class="text-center md:text-left pt-4 md:pt-6 pb-2">
+            <h1 class="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 tracking-tight pb-2 drop-shadow-sm">
+                Mock Scheduler
+            </h1>
+            <p class="text-slate-600 mt-1 md:mt-2 italic" style="font-family: Georgia, serif; font-size: 1.1rem;">
+                Plan your preparations and get notified on time.
+            </p>
+        </div>
+
+        <div class="glass-card p-5 md:p-8 rounded-[2rem] relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-purple-400 to-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-30 z-0"></div>
+            
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800 mb-6 relative z-10 flex items-center gap-2">
+                <span class="bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">✦</span> Create Schedule
+            </h2>
+            
+            <form id="scheduleForm" onsubmit="saveMock(event)" class="relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Mock Title</label>
+                        <input type="text" id="title" required placeholder="e.g., TIME AIMCAT 3" 
+                               class="w-full p-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-slate-800 shadow-inner">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Mock Type</label>
+                        <select id="mockType" class="w-full p-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-slate-800 shadow-inner appearance-none">
+                            <option value="Full Length">Full Length Mock</option>
+                            <option value="VARC">VARC Sectional</option>
+                            <option value="QA">QA Sectional</option>
+                            <option value="LRDI">LRDI Sectional</option>
+                            <option value="PYQ">Previous Year Paper (PYQ)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Date & Time</label>
+                        <input type="datetime-local" id="mockDate" required 
+                               class="w-full p-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-slate-800 shadow-inner">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">Notify Me</label>
+                        <select id="notifyBefore" class="w-full p-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-slate-800 shadow-inner appearance-none">
+                            <option value="5">5 mins before</option>
+                            <option value="15" selected>15 mins before</option>
+                            <option value="30">30 mins before</option>
+                            <option value="60">1 hour before</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Additional Notes (Optional)</label>
+                    <textarea id="notes" rows="2" placeholder="e.g., Focus on accuracy over speed..." 
+                              class="w-full p-3.5 bg-white/80 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none text-slate-800 shadow-inner resize-y"></textarea>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-end pt-2">
+                    <button type="submit" class="w-full md:w-auto bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-90 text-white font-bold py-4 md:py-3.5 px-10 rounded-2xl shadow-lg shadow-indigo-500/30 transition-transform transform active:scale-95 md:hover:-translate-y-1">
+                        + Save Schedule
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="glass-card p-5 md:p-8 rounded-[2rem]">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
+                <h2 class="text-xl md:text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-transparent bg-clip-text">✦</span> Upcoming Mocks
+                </h2>
+                <button onclick="downloadPDF()" class="w-full md:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 hover:opacity-90 text-white font-bold py-3.5 px-8 rounded-2xl shadow-lg shadow-teal-500/30 transition-transform active:scale-95 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Download PDF
+                </button>
+            </div>
+
+            <div class="w-full">
+                <div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-t-2xl text-slate-500 text-xs uppercase tracking-widest font-bold">
+                    <div class="col-span-5">Mock Details</div>
+                    <div class="col-span-3">Date & Time</div>
+                    <div class="col-span-2">Notification</div>
+                    <div class="col-span-2 text-center">Action</div>
+                </div>
+                
+                <div id="mockListContainer" class="flex flex-col gap-3 md:gap-0 md:border-x md:border-b md:border-slate-200 md:rounded-b-2xl overflow-hidden bg-white/30">
+                    </div>
+            </div>
+        </div>
+
+        <div class="glass-card p-4 md:p-8 rounded-[2rem]">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                <h2 class="text-xl md:text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <span class="bg-gradient-to-r from-amber-500 to-orange-500 text-transparent bg-clip-text">✦</span> Calendar View
+                </h2>
+                
+                <div class="w-full md:w-auto flex items-center justify-between gap-3 bg-white border border-slate-200 p-1.5 rounded-2xl shadow-sm">
+                    <button onclick="changeMonth(-1)" class="p-2.5 md:p-2 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors text-slate-600 active:scale-95">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <span id="calendarMonthYear" class="text-base md:text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900 text-center flex-grow md:min-w-[140px]"></span>
+                    <button onclick="changeMonth(1)" class="p-2.5 md:p-2 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors text-slate-600 active:scale-95">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="w-full">
+                <div class="grid grid-cols-7 gap-px bg-slate-200 border border-slate-200 rounded-t-xl overflow-hidden">
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Sun</div>
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Mon</div>
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Tue</div>
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Wed</div>
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Thu</div>
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Fri</div>
+                    <div class="bg-slate-50 py-2 md:py-4 text-center text-[10px] md:text-xs font-extrabold text-slate-400 uppercase tracking-wider md:tracking-widest">Sat</div>
+                </div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-px bg-slate-200 border-b border-l border-r border-slate-200 rounded-b-xl overflow-hidden">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let mocks = [];
+        let currentCalendarDate = new Date();
+
+        function initScheduler() {
+            if ("Notification" in window && Notification.permission !== "denied") {
+                Notification.requestPermission();
+            }
+            const savedData = localStorage.getItem('scheduledMocks');
+            if (savedData) {
+                mocks = JSON.parse(savedData);
+            }
+            renderTable();
+            renderCalendar();
+            setInterval(checkNotifications, 30000); 
+        }
+
+        function saveMock(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const mockType = document.getElementById('mockType').value;
+            const mockDate = document.getElementById('mockDate').value;
+            const notifyBefore = parseInt(document.getElementById('notifyBefore').value);
+            const notes = document.getElementById('notes').value;
+
+            const newMock = {
+                id: Date.now(),
+                title: title,
+                type: mockType,
+                mockDate: mockDate,
+                notifyBefore: notifyBefore,
+                notes: notes,
+                notified: false
+            };
+
+            mocks.push(newMock);
+            localStorage.setItem('scheduledMocks', JSON.stringify(mocks));
+            document.getElementById('scheduleForm').reset();
+            document.getElementById('mockType').value = 'Full Length';
+            
+            renderTable();
+            renderCalendar(); 
+        }
+
+        function deleteMock(id) {
+            mocks = mocks.filter(mock => mock.id !== id);
+            localStorage.setItem('scheduledMocks', JSON.stringify(mocks));
+            renderTable();
+            renderCalendar(); 
+        }
+
+        function getTypeBadgeColor(type) {
+            switch(type) {
+                case 'VARC': return 'bg-gradient-to-r from-indigo-100 to-blue-100 text-indigo-800 border-indigo-200';
+                case 'QA': return 'bg-gradient-to-r from-emerald-100 to-teal-100 text-teal-800 border-teal-200';
+                case 'LRDI': return 'bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 border-amber-200';
+                case 'PYQ': return 'bg-gradient-to-r from-rose-100 to-pink-100 text-rose-800 border-rose-200';
+                default: return 'bg-gradient-to-r from-purple-100 to-fuchsia-100 text-purple-800 border-purple-200'; 
+            }
+        }
+
+        function changeMonth(direction) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year}`;
+
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            const today = new Date();
+            const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                calendarGrid.innerHTML += `<div class="bg-slate-50/50 min-h-[80px] md:min-h-[120px] p-1 md:p-2 opacity-40"></div>`;
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const isToday = isCurrentMonth && today.getDate() === day;
+                const dateHeaderClass = isToday 
+                    ? `bg-gradient-to-br from-blue-500 to-purple-600 text-white w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full text-xs md:text-sm font-bold shadow-lg shadow-purple-500/40 md:transform md:scale-110` 
+                    : `text-[10px] md:text-sm font-bold text-slate-500 p-1`;
+
+                const mocksToday = mocks.filter(mock => {
+                    const mockDate = new Date(mock.mockDate);
+                    return mockDate.getDate() === day && mockDate.getMonth() === month && mockDate.getFullYear() === year;
+                });
+
+                let mocksHTML = '';
+                mocksToday.forEach(mock => {
+                    const mockTime = new Date(mock.mockDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    const badgeClass = getTypeBadgeColor(mock.type || 'Full Length');
+                    
+                    mocksHTML += `
+                        <div class="mt-1 p-1 md:p-2 border rounded cursor-help group relative shadow-sm hover:shadow-md transition-shadow ${badgeClass}">
+                            <div class="md:hidden text-[9px] font-bold truncate leading-tight text-center">${mock.type?.substring(0,2) || 'FL'}</div>
+                            
+                            <div class="hidden md:block text-xs">
+                                <span class="font-extrabold block opacity-80">${mockTime}</span>
+                                <span class="font-bold truncate block">${mock.title}</span>
+                            </div>
+                            
+                            <div class="calendar-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block w-56 p-3 bg-slate-800 text-white text-xs rounded-xl shadow-2xl z-20 whitespace-normal backdrop-blur-md bg-opacity-95 border border-slate-700">
+                                <p class="font-bold border-b border-slate-600 pb-1.5 mb-1.5 text-indigo-300">${mock.title}</p>
+                                <p class="font-medium text-slate-200">Category: ${mock.type || 'Mock'}</p>
+                                <p class="font-medium text-slate-200">Time: ${mockTime}</p>
+                                ${mock.notes ? `<p class="mt-2 italic text-slate-400 pt-1 border-t border-slate-700">"${mock.notes}"</p>` : ''}
+                            </div>
+                        </div>`;
+                });
+
+                calendarGrid.innerHTML += `
+                    <div class="bg-white min-h-[80px] md:min-h-[120px] p-1 md:p-2 flex flex-col transition-colors hover:bg-indigo-50/30 group">
+                        <div class="flex justify-center md:justify-end mb-1">
+                            <span class="${dateHeaderClass}">${day}</span>
                         </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div class="lg:col-span-1 bg-slate-50 border border-slate-200 p-5 rounded-2xl space-y-4 self-start">
-                                <h3 class="font-bold text-slate-800 text-sm font-sans uppercase tracking-wider">Schedule New Mock</h3>
-                                <form onsubmit="scheduleMock(event)" class="space-y-3">
-                                    <input type="text" id="sched_name" placeholder="Mock Name (e.g. SimCAT 5)" required class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-sans focus:outline-none focus:border-indigo-500">
-                                    <input type="date" id="sched_date" required class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-sans focus:outline-none focus:border-indigo-500">
-                                    <input type="time" id="sched_time" required class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-sans focus:outline-none focus:border-indigo-500">
-                                    <select id="sched_format" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-sans focus:outline-none focus:border-indigo-500">
-                                        <option>Full Length</option><option>VARC Sectional</option><option>DILR Sectional</option><option>Quant Sectional</option>
-                                    </select>
-                                    <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer mt-2">
-                                        <input type="checkbox" id="sched_notify" checked class="accent-indigo-600">
-                                        Send Email & Push Notifications
-                                    </label>
-                                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-600 transition-colors shadow-md mt-2">Confirm Schedule</button>
-                                </form>
-                            </div>
-                            <div class="lg:col-span-2 space-y-8">
-                                <div>
-                                    <h3 class="font-bold text-emerald-700 text-sm mb-4 flex items-center gap-2 font-sans uppercase tracking-wider"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Upcoming Schedule</h3>
-                                    <div id="sched_upcoming" class="space-y-3 max-h-60 overflow-y-auto custom-scroll pr-2"></div>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-slate-500 text-sm mb-4 flex items-center gap-2 font-sans uppercase tracking-wider"><span class="w-2 h-2 rounded-full bg-slate-400"></span> Past Mocks</h3>
-                                    <div id="sched_past" class="space-y-3 max-h-60 overflow-y-auto custom-scroll pr-2 opacity-70"></div>
-                                </div>
-                            </div>
+                        <div class="flex flex-col gap-0.5 md:gap-1 flex-grow">
+                            ${mocksHTML}
                         </div>
                     </div>
+                `;
+            }
+
+            const totalCells = firstDayOfMonth + daysInMonth;
+            const remainingCells = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+            for (let i = 0; i < remainingCells; i++) {
+                calendarGrid.innerHTML += `<div class="bg-slate-50/50 min-h-[80px] md:min-h-[120px] p-1 md:p-2 opacity-40"></div>`;
+            }
+        }
+
+        function renderTable() {
+            const listContainer = document.getElementById('mockListContainer');
+            listContainer.innerHTML = ''; 
+
+            if (mocks.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="p-10 text-center text-slate-400 font-medium bg-white/50">
+                        <div class="flex flex-col items-center justify-center gap-2">
+                            <span class="text-3xl opacity-50">📋</span>
+                            No mocks scheduled yet.
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            mocks.sort((a, b) => new Date(a.mockDate) - new Date(b.mockDate));
+
+            mocks.forEach(mock => {
+                const dateObj = new Date(mock.mockDate);
+                const formattedDate = dateObj.toLocaleString('en-US', { 
+                    weekday: 'short', month: 'short', day: 'numeric', 
+                    hour: 'numeric', minute: '2-digit', hour12: true 
+                });
+
+                const displayType = mock.type || 'N/A';
+                const badgeClass = getTypeBadgeColor(displayType);
+                const displayNotes = mock.notes ? `<p class="text-xs md:text-sm text-slate-500 mt-2 italic font-medium leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">${mock.notes}</p>` : '';
+
+                // Responsive Card/Row logic
+                const row = `
+                    <div class="bg-white/70 md:bg-white/40 p-5 rounded-2xl md:rounded-none border border-slate-200 md:border-b md:border-x-0 md:border-t-0 last:border-b-0 hover:bg-white/90 transition-colors duration-200">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-4 md:items-center">
+                            
+                            <div class="col-span-1 md:col-span-5">
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                    <span class="font-extrabold text-slate-800 text-lg">${mock.title}</span>
+                                    <span class="border px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-widest shadow-sm ${badgeClass}">
+                                        ${displayType}
+                                    </span>
+                                </div>
+                                ${displayNotes}
+                            </div>
+                            
+                            <div class="col-span-1 md:col-span-3">
+                                <span class="md:hidden text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Scheduled For</span>
+                                <span class="text-slate-700 font-bold text-sm md:text-base">${formattedDate}</span>
+                            </div>
+                            
+                            <div class="col-span-1 md:col-span-2">
+                                <span class="md:hidden text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Notification</span>
+                                <span class="bg-slate-100 text-slate-600 border border-slate-200 py-1.5 px-3 rounded-full text-xs font-bold shadow-sm inline-flex items-center gap-1">
+                                    🔔 ${mock.notifyBefore} mins
+                                </span>
+                            </div>
+                            
+                            <div class="col-span-1 md:col-span-2 text-left md:text-center mt-2 md:mt-0">
+                                <button onclick="deleteMock(${mock.id})" class="w-full md:w-auto text-rose-500 bg-rose-50 hover:bg-rose-100 border border-rose-100 py-2.5 px-4 rounded-xl transition-colors font-bold text-sm">
+                                    Remove
+                                </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                `;
+                listContainer.innerHTML += row;
+            });
+        }
+
+        function checkNotifications() {
+            const now = new Date();
+            mocks.forEach(mock => {
+                if (mock.notified) return; 
+                const mockTime = new Date(mock.mockDate);
+                const timeDiffMinutes = (mockTime - now) / (1000 * 60);
+
+                if (timeDiffMinutes > 0 && timeDiffMinutes <= mock.notifyBefore) {
+                    mock.notified = true;
+                    localStorage.setItem('scheduledMocks', JSON.stringify(mocks));
+                    const alertText = `Reminder: Your ${mock.type || 'scheduled'} mock "${mock.title}" starts in ${mock.notifyBefore} minutes!`;
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        new Notification("Mock Scheduler Alert", { 
+                            body: alertText,
+                            icon: "https://cdn-icons-png.flaticon.com/512/3239/3239952.png" 
+                        });
+                    } else {
+                        alert(alertText);
+                    }
+                }
+            });
+        }
+
+        function downloadPDF() {
+            if (mocks.length === 0) {
+                alert("No scheduled mocks to download!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.setTextColor(79, 70, 229); 
+            doc.text("Mock Preparation Schedule", 14, 22);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            doc.setTextColor(100, 116, 139); 
+            doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+
+            const tableColumn = ["Title", "Category", "Date & Time", "Notes"];
+            const tableRows = [];
+
+            mocks.forEach(mock => {
+                const dateObj = new Date(mock.mockDate);
+                const mockData = [
+                    mock.title,
+                    mock.type || 'N/A',
+                    dateObj.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }),
+                    mock.notes || '-'
+                ];
+                tableRows.push(mockData);
+            });
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 38,
+                headStyles: { fillColor: [79, 70, 229], textColor: [255, 255, 255], fontStyle: 'bold' }, 
+                styles: { font: 'helvetica', fontSize: 10, cellPadding: 5 },
+                alternateRowStyles: { fillColor: [248, 250, 252] },
+                columnStyles: {
+                    0: { cellWidth: 40, fontStyle: 'bold' },
+                    1: { cellWidth: 25 },
+                    2: { cellWidth: 45 },
+                    3: { cellWidth: 'auto', fontStyle: 'italic', textColor: [100, 116, 139] } 
+                }
+            });
+
+            doc.save("Responsive_Mock_Schedule.pdf");
+        }
+    </script>
+                </div>
+
+                <div id="planner-panel" class="panel-content hidden space-y-6 sm:space-y-8">
+                  
+               <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantify CAT</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+        }
+    </script>
+
+    <style>
+        .category-QA { background-color: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+        .category-LRDI { background-color: #dcfce3; color: #15803d; border: 1px solid #bbf7d0; }
+        .category-VARC { background-color: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .category-Mocks { background-color: #ffe4e6; color: #e11d48; border: 1px solid #fecdd3; }
+        
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+        
+        .dark-scroll::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 10px; }
+        .dark-scroll::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
+    </style>
+</head>
+<body class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-100 via-slate-50 to-rose-50 min-h-screen font-sans text-slate-800 antialiased pb-12 selection:bg-violet-200 selection:text-violet-900">
+
+    <div class="max-w-6xl mx-auto p-3 sm:p-6 md:p-10">
+        
+        <!-- Header & Streak -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 bg-white/70 backdrop-blur-2xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80">
+            <div class="mb-5 md:mb-0">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 flex items-center gap-2 md:gap-3 tracking-tight">
+                    <div class="p-2 md:p-2.5 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-xl shadow-lg shadow-violet-200 shrink-0">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 md:w-6 md:h-6 text-white"></i>
+                    </div>
+                    <span>Quantify <span class="text-transparent bg-clip-text bg-gradient-to-br from-violet-600 to-fuchsia-500 font-black">CAT</span></span>
+                </h1>
+                <p class="text-slate-600 mt-2 md:mt-3 text-[13px] md:text-[15px] leading-relaxed" style="font-family: Georgia, serif; font-style: italic;">
+                    Orchestrating daily execution, macro strategy milestones, and AI-driven performance analytics.
+                </p>
+            </div>
+            
+            <div class="flex items-center justify-between sm:justify-start gap-4 bg-gradient-to-br from-orange-50 via-amber-50 to-rose-50 px-5 md:px-6 py-3 md:py-3.5 rounded-2xl border border-orange-100 shadow-sm w-full md:w-auto">
+                <div class="flex items-center gap-3 md:gap-4">
+                    <div class="p-1.5 md:p-2 bg-gradient-to-br from-orange-400 to-rose-500 rounded-xl shadow-sm">
+                        <i id="streakIcon" data-lucide="flame" class="w-5 h-5 md:w-6 md:h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-[9px] md:text-[10px] font-bold text-orange-800/70 uppercase tracking-widest mb-0.5">Consistency Streak</p>
+                        <p class="text-lg md:text-xl font-black text-transparent bg-clip-text bg-gradient-to-br from-orange-600 to-rose-600"><span id="streakDisplay">0</span> Days</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Daily Micro Execution -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-8 mb-6 md:mb-8">
+            <!-- Daily Planner -->
+            <div class="lg:col-span-5 flex flex-col bg-white/80 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80">
+                <div class="flex justify-between items-center mb-5 md:mb-6">
+                    <h2 class="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-violet-600"></i>
+                        Daily Execution
+                    </h2>
+                    <span id="lockBadge" class="text-[10px] md:text-[11px] font-bold px-2.5 py-1 rounded-full transition-all">Loading...</span>
+                </div>
+
+                <form id="taskForm" class="flex gap-2 mb-5 md:mb-6">
+                    <select id="taskCategory" class="px-2 md:px-2.5 py-2.5 md:py-3 border border-slate-200 rounded-xl text-xs bg-white font-bold text-slate-700 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all shadow-sm shrink-0">
+                        <option value="QA">QA</option><option value="LRDI">LRDI</option><option value="VARC">VARC</option><option value="Mocks">Mocks</option>
+                    </select>
+                    <input type="text" id="taskInput" required class="flex-1 min-w-[120px] px-3 md:px-4 py-2.5 md:py-3 border border-slate-200 rounded-xl text-xs md:text-sm outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all bg-white shadow-sm placeholder:text-slate-400 font-medium" placeholder="Daily target...">
+                    <button type="submit" class="bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white p-2.5 md:p-3 rounded-xl hover:from-violet-700 hover:to-fuchsia-700 transition-all shadow-lg shadow-violet-200 shrink-0 transform active:scale-95">
+                        <i data-lucide="plus" class="w-4 h-4 md:w-5 md:h-5"></i>
+                    </button>
+                </form>
+
+                <div id="taskList" class="space-y-2 md:space-y-3 mb-5 md:mb-6 flex-1 max-h-[250px] overflow-y-auto pr-1"></div>
+
+                <div class="pt-5 md:pt-6 border-t border-slate-100 mt-auto">
+                    <div id="progressContainer" class="hidden mb-5 md:mb-6">
+                        <div class="flex justify-between items-end mb-2">
+                            <span class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wide">Live Track</span>
+                            <span id="progressText" class="text-lg md:text-xl font-black text-slate-800">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2.5 md:h-3 overflow-hidden shadow-inner p-0.5">
+                            <div id="progressBar" class="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-rose-500 h-full rounded-full transition-all duration-700 ease-out relative" style="width: 0%"><div class="absolute inset-0 bg-white/20"></div></div>
+                        </div>
+                    </div>
+                    <button id="primaryActionBtn" class="w-full font-bold py-3 md:py-4 rounded-xl shadow-md transition-all transform active:scale-[0.99] text-xs md:text-sm"></button>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="lg:col-span-7 flex flex-col gap-5 md:gap-8">
+                <div class="bg-white/80 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 flex-1">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-sm md:text-base font-bold text-slate-900">Efficiency Trajectory</h2>
+                        <span class="text-[9px] md:text-[11px] font-bold px-2 md:px-3 py-1 bg-violet-50 text-violet-700 rounded-full border border-violet-100">Recent</span>
+                    </div>
+                    <div class="relative h-[150px] md:h-[180px] w-full"><canvas id="lineChart"></canvas></div>
+                </div>
+
+                <div class="bg-white/80 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 flex-1">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-sm md:text-base font-bold text-slate-900">Task Volume Output</h2>
+                        <span class="text-[9px] md:text-[11px] font-bold px-2 md:px-3 py-1 bg-rose-50 text-rose-700 rounded-full border border-rose-100">Volume</span>
+                    </div>
+                    <div class="relative h-[130px] md:h-[150px] w-full"><canvas id="barChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Macro Strategy -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 mb-6 md:mb-8">
+            <!-- Weekly Planner -->
+            <div class="bg-white/80 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 flex flex-col h-[380px] md:h-[450px]">
+                <div class="flex justify-between items-center mb-5 md:mb-6">
+                    <h2 class="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="calendar-days" class="w-4 h-4 md:w-5 md:h-5 text-fuchsia-500"></i> Weekly Sprints
+                    </h2>
+                    <button onclick="clearCompleted('weekly')" class="text-[9px] md:text-[10px] font-bold text-slate-400 hover:text-fuchsia-600 transition-colors flex items-center gap-1">
+                        <i data-lucide="check-check" class="w-3 h-3"></i> Clear Done
+                    </button>
+                </div>
+                <form id="weeklyForm" class="flex gap-2 mb-5 md:mb-6">
+                    <select id="weeklyCategory" class="px-2 py-2 border border-slate-200 rounded-lg text-[11px] md:text-xs bg-white font-bold text-slate-700 outline-none focus:ring-2 focus:ring-fuchsia-500/20 shadow-sm shrink-0"><option value="QA">QA</option><option value="LRDI">LRDI</option><option value="VARC">VARC</option><option value="Mocks">Mocks</option></select>
+                    <input type="text" id="weeklyInput" required class="flex-1 min-w-[100px] px-3 py-2 border border-slate-200 rounded-lg text-[11px] md:text-xs outline-none focus:ring-2 focus:ring-fuchsia-500/20 shadow-sm placeholder:text-slate-400 font-medium" placeholder="Add weekly goal...">
+                    <button type="submit" class="bg-fuchsia-500 text-white p-2 rounded-lg hover:bg-fuchsia-600 transition-all shadow-sm shrink-0"><i data-lucide="plus" class="w-3 h-3 md:w-4 md:h-4"></i></button>
+                </form>
+                <div id="weeklyList" class="space-y-2 mb-4 flex-1 overflow-y-auto pr-1"></div>
+                <div class="pt-4 border-t border-slate-100 mt-auto">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase">Week Progress</span>
+                        <span id="weeklyProgressText" class="text-xs md:text-sm font-black text-fuchsia-600">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden"><div id="weeklyProgressBar" class="bg-fuchsia-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                </div>
+            </div>
+
+            <!-- Monthly Planner -->
+            <div class="bg-white/80 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 flex flex-col h-[380px] md:h-[450px]">
+                <div class="flex justify-between items-center mb-5 md:mb-6">
+                    <h2 class="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="calendar-range" class="w-4 h-4 md:w-5 md:h-5 text-rose-500"></i> Monthly Milestones
+                    </h2>
+                    <button onclick="clearCompleted('monthly')" class="text-[9px] md:text-[10px] font-bold text-slate-400 hover:text-rose-600 transition-colors flex items-center gap-1">
+                        <i data-lucide="check-check" class="w-3 h-3"></i> Clear Done
+                    </button>
+                </div>
+                <form id="monthlyForm" class="flex gap-2 mb-5 md:mb-6">
+                    <select id="monthlyCategory" class="px-2 py-2 border border-slate-200 rounded-lg text-[11px] md:text-xs bg-white font-bold text-slate-700 outline-none focus:ring-2 focus:ring-rose-500/20 shadow-sm shrink-0"><option value="QA">QA</option><option value="LRDI">LRDI</option><option value="VARC">VARC</option><option value="Mocks">Mocks</option></select>
+                    <input type="text" id="monthlyInput" required class="flex-1 min-w-[100px] px-3 py-2 border border-slate-200 rounded-lg text-[11px] md:text-xs outline-none focus:ring-2 focus:ring-rose-500/20 shadow-sm placeholder:text-slate-400 font-medium" placeholder="Add monthly milestone...">
+                    <button type="submit" class="bg-rose-500 text-white p-2 rounded-lg hover:bg-rose-600 transition-all shadow-sm shrink-0"><i data-lucide="plus" class="w-3 h-3 md:w-4 md:h-4"></i></button>
+                </form>
+                <div id="monthlyList" class="space-y-2 mb-4 flex-1 overflow-y-auto pr-1"></div>
+                <div class="pt-4 border-t border-slate-100 mt-auto">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase">Month Progress</span>
+                        <span id="monthlyProgressText" class="text-xs md:text-sm font-black text-rose-600">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden"><div id="monthlyProgressBar" class="bg-rose-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: AI Heatmap & Locked History -->
+        <div class="bg-white/80 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
+                <div>
+                    <h2 class="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2 mb-1">
+                        <i data-lucide="layout-grid" class="w-4 h-4 md:w-5 md:h-5 text-violet-600"></i>
+                        Consistency Heatmap & Performance Archive
+                    </h2>
+                    <p class="text-xs md:text-sm text-slate-500 font-medium">Select any completed square to review your locked goals and AI insights.</p>
+                </div>
+                
+                <div class="flex items-center gap-2 md:gap-3 bg-white p-1.5 rounded-xl border border-slate-200 shadow-sm w-full md:w-auto justify-between md:justify-start">
+                    <button id="prevMonth" class="p-1.5 hover:bg-slate-50 hover:shadow-xs rounded-lg text-slate-600 transition-all"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <span id="currentMonthLabel" class="font-bold text-[11px] md:text-xs text-slate-700 min-w-[100px] md:min-w-[110px] text-center">Month Year</span>
+                    <button id="nextMonth" class="p-1.5 hover:bg-slate-50 hover:shadow-xs rounded-lg text-slate-600 transition-all"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-8">
+                <!-- Heatmap -->
+                <div class="lg:col-span-7">
+                    <div class="grid grid-cols-7 gap-1 sm:gap-2 mb-2 md:mb-3 text-center text-[9px] md:text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                    </div>
+                    <div id="calendarGrid" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
+                </div>
+
+                <!-- AI Desk & Archive Viewer -->
+                <div class="lg:col-span-5">
+                    <div id="dayDetails" class="p-5 md:p-6 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-900 via-violet-950 to-slate-900 rounded-2xl text-white h-full min-h-[350px] md:min-h-[400px] flex flex-col border border-violet-900/50 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-20 -right-20 w-64 h-64 bg-fuchsia-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                        <div id="detailsContent" class="hidden h-full flex flex-col relative z-10">
+                            <!-- Header -->
+                            <div class="flex justify-between items-start mb-3 md:mb-4 shrink-0">
+                                <h3 id="detailDate" class="text-xs md:text-sm font-bold text-violet-200">Date Title</h3>
+                                <span id="peerCompareBadge" class="text-[9px] md:text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider"></span>
+                            </div>
+                            
+                            <!-- Stats -->
+                            <div class="grid grid-cols-2 gap-2 md:gap-3 mb-3 md:mb-4 shrink-0">
+                                <div class="bg-white/5 border border-white/10 p-2.5 md:p-3 rounded-xl backdrop-blur-sm">
+                                    <p class="text-[9px] md:text-[10px] text-violet-300 font-bold uppercase tracking-wider mb-0.5">Accuracy</p>
+                                    <p id="detailPercentage" class="text-lg md:text-xl font-black text-white">0%</p>
+                                </div>
+                                <div class="bg-white/5 border border-white/10 p-2.5 md:p-3 rounded-xl backdrop-blur-sm">
+                                    <p class="text-[9px] md:text-[10px] text-violet-300 font-bold uppercase tracking-wider mb-0.5">Cohort Avg</p>
+                                    <p id="detailPeerAvg" class="text-lg md:text-xl font-bold text-fuchsia-300">0%</p>
+                                </div>
+                            </div>
+
+                            <!-- Locked Tasks List -->
+                            <div class="border-t border-white/10 pt-3 md:pt-4 flex-1 flex flex-col min-h-0">
+                                <div class="flex items-center gap-1.5 md:gap-2 mb-2 text-violet-200 shrink-0">
+                                    <i data-lucide="lock" class="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0"></i>
+                                    <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-violet-300">Locked Daily Goals</span>
+                                </div>
+                                <div id="detailTaskList" class="space-y-1.5 overflow-y-auto pr-2 flex-1 dark-scroll pb-2">
+                                    <!-- Injected via JS -->
+                                </div>
+                            </div>
+
+                            <!-- AI Review -->
+                            <div class="border-t border-white/10 pt-3 md:pt-4 mt-2 shrink-0">
+                                <div class="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2 text-fuchsia-400">
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0"></i>
+                                    <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-violet-200">AI Peer Review</span>
+                                </div>
+                                <p id="detailAiComment" class="text-[10px] md:text-[11px] leading-relaxed text-slate-300 font-medium"></p>
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="detailsEmpty" class="flex flex-col items-center justify-center h-full relative z-10 text-center py-6 md:py-10">
+                            <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3 md:mb-4 border border-white/10">
+                                <i data-lucide="archive" class="w-6 h-6 md:w-8 md:h-8 text-violet-400 animate-pulse"></i>
+                            </div>
+                            <p class="text-[11px] md:text-xs font-bold text-violet-200 uppercase tracking-widest">Archive Viewer</p>
+                            <p class="text-[10px] md:text-xs text-slate-400 mt-2 max-w-[200px] md:max-w-[220px] mx-auto leading-relaxed">Select a marked cell from the tracking grid to unlock past goals and analytics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Application Logic -->
+    <script>
+        function getLocalISODate(dateObj = new Date()) {
+            const offset = dateObj.getTimezoneOffset() * 60000;
+            return (new Date(dateObj - offset)).toISOString().split('T')[0];
+        }
+
+        // --- State Management ---
+        let tasks = JSON.parse(localStorage.getItem('catTasks')) || [];
+        let weeklyTasks = JSON.parse(localStorage.getItem('catWeeklyTasks')) || [];
+        let monthlyTasks = JSON.parse(localStorage.getItem('catMonthlyTasks')) || [];
+        let isLocked = JSON.parse(localStorage.getItem('catIsLocked')) || false;
+        let streak = JSON.parse(localStorage.getItem('catStreak')) || 0;
+        let history = JSON.parse(localStorage.getItem('catHistory')) || [];
+        let calendarViewDate = new Date();
+
+        let lineChartInstance = null; let barChartInstance = null;
+
+        function saveData() {
+            localStorage.setItem('catTasks', JSON.stringify(tasks));
+            localStorage.setItem('catWeeklyTasks', JSON.stringify(weeklyTasks));
+            localStorage.setItem('catMonthlyTasks', JSON.stringify(monthlyTasks));
+            localStorage.setItem('catIsLocked', JSON.stringify(isLocked));
+            localStorage.setItem('catStreak', JSON.stringify(streak));
+            localStorage.setItem('catHistory', JSON.stringify(history));
+        }
+
+        function calculateProgress(list) {
+            if (list.length === 0) return 0;
+            const completed = list.filter(t => t.completed).length;
+            return Math.round((completed / list.length) * 100);
+        }
+
+        function generateAiInsight(userPct, peerPct, composition) {
+            if (userPct === 100) return `Absolute execution. While the cohort baseline tracked at ${peerPct}%, you systematically checked off every targeted node. This maintains top 3% structural efficiency today.`;
+            else if (userPct >= 75) return `High competitive consistency verified. At ${userPct}%, you outpaced the immediate active peer baseline of ${peerPct}%.`;
+            else if (userPct >= 50) return `Moderate output threshold met. You are indexing strictly average with the core peer cohort (${peerPct}% completion).`;
+            else if (userPct > 0) return `Compounding deficit warning. The competitive peer baseline optimized at ${peerPct}% today. Analyze if strategic drag occurred.`;
+            else return `System velocity zero. Peer metrics logged structural progress today. Protect your commitment velocity tomorrow.`;
+        }
+
+        function renderMacroPlanner(list, containerId, progressTextId, progressBarId, colorClass) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs italic">No targets set yet.</div>`;
+            } else {
+                list.forEach(task => {
+                    const taskEl = document.createElement('div');
+                    const textClass = task.completed ? 'text-slate-400 line-through' : 'text-slate-700';
+                    const iconColor = task.completed ? `text-${colorClass}-500` : 'text-slate-300';
+                    const hoverColor = `group-hover:text-${colorClass}-400`;
+                    
+                    taskEl.className = `flex items-center justify-between p-2 md:p-2.5 rounded-xl border transition-all ${task.completed ? 'bg-slate-50 border-slate-100' : 'bg-white border-slate-200 hover:shadow-sm'}`;
+                    taskEl.innerHTML = `
+                        <div class="flex items-center gap-1.5 md:gap-2 overflow-hidden w-full cursor-pointer group" onclick="toggleMacroTask('${containerId}', ${task.id})">
+                            <div class="shrink-0 transition-transform group-hover:scale-110">
+                                ${task.completed ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5 md:w-4 md:h-4 ${iconColor}"></i>` : `<i data-lucide="circle" class="w-3.5 h-3.5 md:w-4 md:h-4 ${iconColor} ${hoverColor}"></i>`}
+                            </div>
+                            <span class="text-[8px] md:text-[9px] font-bold px-1 md:px-1.5 py-0.5 rounded uppercase tracking-wide shrink-0 category-${task.category}">${task.category}</span>
+                            <span class="text-[11px] md:text-xs font-semibold truncate ${textClass}">${task.text}</span>
+                        </div>
+                        <button onclick="deleteMacroTask('${containerId}', ${task.id})" class="text-slate-300 hover:text-red-500 ml-2 shrink-0"><i data-lucide="x" class="w-3.5 h-3.5 md:w-4 md:h-4"></i></button>
+                    `;
+                    container.appendChild(taskEl);
+                });
+            }
+
+            const progress = calculateProgress(list);
+            document.getElementById(progressTextId).innerText = `${progress}%`;
+            document.getElementById(progressBarId).style.width = `${progress}%`;
+        }
+
+        window.toggleMacroTask = function(type, id) {
+            if (type === 'weeklyList') { const t = weeklyTasks.find(x => x.id === id); if(t) t.completed = !t.completed; } 
+            else { const t = monthlyTasks.find(x => x.id === id); if(t) t.completed = !t.completed; }
+            updateAllUIs();
+        }
+        window.deleteMacroTask = function(type, id) {
+            if (type === 'weeklyList') weeklyTasks = weeklyTasks.filter(x => x.id !== id);
+            else monthlyTasks = monthlyTasks.filter(x => x.id !== id);
+            updateAllUIs();
+        }
+        window.clearCompleted = function(type) {
+            if (type === 'weekly') weeklyTasks = weeklyTasks.filter(x => !x.completed);
+            else monthlyTasks = monthlyTasks.filter(x => !x.completed);
+            updateAllUIs();
+        }
+
+        document.getElementById('weeklyForm').addEventListener('submit', (e) => { e.preventDefault(); const text = document.getElementById('weeklyInput').value.trim(); if(!text) return; weeklyTasks.push({ id: Date.now(), text, category: document.getElementById('weeklyCategory').value, completed: false }); document.getElementById('weeklyInput').value = ''; updateAllUIs(); });
+        document.getElementById('monthlyForm').addEventListener('submit', (e) => { e.preventDefault(); const text = document.getElementById('monthlyInput').value.trim(); if(!text) return; monthlyTasks.push({ id: Date.now(), text, category: document.getElementById('monthlyCategory').value, completed: false }); document.getElementById('monthlyInput').value = ''; updateAllUIs(); });
+
+        function updateAllUIs() {
+            document.getElementById('streakDisplay').innerText = streak;
+            
+            if (!isLocked) {
+                document.getElementById('lockBadge').innerText = "Planning Phase"; document.getElementById('lockBadge').className = "text-[9px] md:text-[11px] font-bold px-2 md:px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200 shadow-inner";
+                document.getElementById('taskForm').classList.remove('hidden'); document.getElementById('progressContainer').classList.add('hidden');
+                
+                const btn = document.getElementById('primaryActionBtn'); btn.disabled = tasks.length === 0; btn.innerText = "Lock Today's Plan";
+                btn.className = tasks.length === 0 ? "w-full bg-slate-100 text-slate-400 font-bold py-3 md:py-4 rounded-xl cursor-not-allowed text-xs md:text-sm border border-slate-200" : "w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white shadow-xl shadow-violet-200 font-bold py-3 md:py-4 rounded-xl text-xs md:text-sm";
+            } else {
+                document.getElementById('lockBadge').innerText = "Execution Locked"; document.getElementById('lockBadge').className = "text-[9px] md:text-[11px] font-bold px-2 md:px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 animate-pulse shadow-sm";
+                document.getElementById('taskForm').classList.add('hidden'); document.getElementById('progressContainer').classList.remove('hidden');
+                
+                const progress = calculateProgress(tasks);
+                document.getElementById('progressText').innerText = `${progress}%`; document.getElementById('progressBar').style.width = `${progress}%`;
+
+                const btn = document.getElementById('primaryActionBtn'); btn.disabled = false; btn.innerText = "Complete Session & Save Goals";
+                btn.className = "w-full bg-slate-900 hover:bg-black text-white font-bold py-3 md:py-4 rounded-xl shadow-xl shadow-slate-300 text-xs md:text-sm";
+            }
+
+            const taskList = document.getElementById('taskList'); taskList.innerHTML = '';
+            if (tasks.length === 0) {
+                taskList.innerHTML = `<div class="text-center py-6 md:py-8 text-slate-400 text-[11px] md:text-xs italic">Construct your daily milestones above to begin.</div>`;
+            } else {
+                tasks.forEach(task => {
+                    const bgClass = task.completed ? 'bg-slate-50 border-slate-100' : 'bg-white border-slate-200 hover:border-violet-300 shadow-sm';
+                    const textClass = task.completed ? 'text-slate-400 line-through' : 'text-slate-700';
+                    const taskEl = document.createElement('div'); taskEl.className = `flex items-center justify-between p-2.5 md:p-3 rounded-xl border transition-all duration-150 ${bgClass}`;
+                    
+                    const interactionClick = isLocked ? `onclick="toggleTask(${task.id})"` : '';
+                    const actionButton = !isLocked ? `<button onclick="deleteTask(${task.id})" class="text-slate-300 hover:text-rose-500 p-1.5"><i data-lucide="trash-2" class="w-3.5 h-3.5 md:w-4 md:h-4"></i></button>` : (task.completed ? `<i data-lucide="lock" class="w-3 h-3 md:w-3.5 md:h-3.5 text-violet-300 mr-1 md:mr-2"></i>` : `<i data-lucide="zap" class="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-400 mr-1 md:mr-2 animate-bounce"></i>`);
+
+                    taskEl.innerHTML = `
+                        <div class="flex items-center gap-2 md:gap-3 overflow-hidden w-full ${isLocked ? 'cursor-pointer group' : ''}" ${interactionClick}>
+                            ${isLocked ? `<div class="shrink-0 transition-transform group-hover:scale-110">${task.completed ? `<i data-lucide="check-circle-2" class="w-4 h-4 md:w-5 md:h-5 text-violet-600"></i>` : `<i data-lucide="circle" class="w-4 h-4 md:w-5 md:h-5 text-slate-300 group-hover:text-violet-400"></i>`}</div>` : ''}
+                            <span class="text-[9px] md:text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded uppercase tracking-wide shrink-0 category-${task.category}">${task.category}</span>
+                            <span class="text-[11px] md:text-xs font-semibold truncate ${textClass}">${task.text}</span>
+                        </div><div class="shrink-0 flex items-center ml-1 md:ml-2">${actionButton}</div>`;
+                    taskList.appendChild(taskEl);
+                });
+            }
+
+            renderMacroPlanner(weeklyTasks, 'weeklyList', 'weeklyProgressText', 'weeklyProgressBar', 'fuchsia');
+            renderMacroPlanner(monthlyTasks, 'monthlyList', 'monthlyProgressText', 'monthlyProgressBar', 'rose');
+
+            saveData(); renderCharts(); renderCalendar(); lucide.createIcons();
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', (e) => { e.preventDefault(); if (isLocked) return; const text = document.getElementById('taskInput').value.trim(); if (!text) return; tasks.push({ id: Date.now(), text, category: document.getElementById('taskCategory').value, completed: false }); document.getElementById('taskInput').value = ''; updateAllUIs(); });
+        window.toggleTask = function(id) { if (!isLocked) return; const t = tasks.find(x => x.id === id); if (t) t.completed = !t.completed; updateAllUIs(); };
+        window.deleteTask = function(id) { if (isLocked) return; tasks = tasks.filter(x => x.id !== id); updateAllUIs(); };
+
+        document.getElementById('primaryActionBtn').addEventListener('click', () => {
+            if (!isLocked) {
+                if (tasks.length === 0) return; isLocked = true; updateAllUIs();
+            } else {
+                const progress = calculateProgress(tasks);
+                const today = new Date(); const fullDateStr = getLocalISODate(today);
+                const peerAvgSeed = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
+                
+                const lockedTasksSnapshot = JSON.parse(JSON.stringify(tasks));
+
+                const logRecord = { 
+                    fullDate: fullDateStr, date: today.toLocaleDateString('en-US', { weekday: 'short' }), 
+                    percentage: progress, tasksDone: tasks.filter(t => t.completed).length, 
+                    peerAvg: peerAvgSeed, aiComment: generateAiInsight(progress, peerAvgSeed, tasks),
+                    tasks: lockedTasksSnapshot 
+                };
+
+                const existingIndex = history.findIndex(h => h.fullDate === fullDateStr);
+                if (existingIndex >= 0) history[existingIndex] = logRecord; else history.push(logRecord);
+
+                if (progress >= 70) streak++; else streak = 0;
+                tasks = []; isLocked = false; updateAllUIs(); showDayDetails(fullDateStr);
+            }
+        });
+
+        Chart.defaults.font.family = "'Inter', sans-serif"; Chart.defaults.color = '#94a3b8';
+        function renderCharts() {
+            const chartData = history.slice(-7); const displayData = chartData.length > 0 ? chartData : [{date: 'N/A', percentage: 0, tasksDone: 0}];
+            const labels = displayData.map(h => h.date); const percentages = displayData.map(h => h.percentage); const tasksDone = displayData.map(h => h.tasksDone);
+
+            const lineCtx = document.getElementById('lineChart').getContext('2d'); const lineGradientFill = lineCtx.createLinearGradient(0, 0, 0, 180); lineGradientFill.addColorStop(0, 'rgba(139, 92, 246, 0.2)'); lineGradientFill.addColorStop(1, 'rgba(217, 70, 239, 0)');
+            if (lineChartInstance) lineChartInstance.destroy();
+            lineChartInstance = new Chart(lineCtx, { type: 'line', data: { labels, datasets: [{ data: percentages, borderColor: '#8b5cf6', backgroundColor: lineGradientFill, fill: true, tension: 0.4, borderWidth: 2, pointBackgroundColor: '#ffffff', pointBorderColor: '#d946ef', pointBorderWidth: 2, pointRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100, border: {display: false}, grid: { color: '#f8fafc' } }, x: { border: {display: false}, grid: { display: false }, ticks: { font: { size: 10 } } } } } });
+
+            const barCtx = document.getElementById('barChart').getContext('2d'); const barGradient = barCtx.createLinearGradient(0, 0, 0, 150); barGradient.addColorStop(0, '#d946ef'); barGradient.addColorStop(1, '#f43f5e');
+            if (barChartInstance) barChartInstance.destroy();
+            barChartInstance = new Chart(barCtx, { type: 'bar', data: { labels, datasets: [{ data: tasksDone, backgroundColor: barGradient, borderRadius: 3, barThickness: 12 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, border: {display: false}, grid: { color: '#f8fafc' }, ticks: { stepSize: 1 } }, x: { border: {display: false}, grid: { display: false }, ticks: { font: { size: 10 } } } } } });
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => { calendarViewDate.setMonth(calendarViewDate.getMonth() - 1); updateAllUIs(); });
+        document.getElementById('nextMonth').addEventListener('click', () => { calendarViewDate.setMonth(calendarViewDate.getMonth() + 1); updateAllUIs(); });
+
+        function renderCalendar() {
+            const year = calendarViewDate.getFullYear(); const month = calendarViewDate.getMonth();
+            document.getElementById('currentMonthLabel').innerText = calendarViewDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const grid = document.getElementById('calendarGrid'); grid.innerHTML = '';
+            for(let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
+            const todayStr = getLocalISODate(new Date());
+
+            for(let d = 1; d <= daysInMonth; d++) {
+                const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const record = history.find(h => h.fullDate === dateKey);
+                let baseStyle = "bg-white border-slate-100 text-slate-400 hover:border-violet-300 cursor-pointer shadow-sm rounded-md sm:rounded-xl";
+                if (record) {
+                    if (record.percentage >= 80) baseStyle = "bg-gradient-to-br from-violet-600 to-fuchsia-600 border-violet-700 text-white font-bold shadow-md rounded-md sm:rounded-xl";
+                    else if (record.percentage >= 50) baseStyle = "bg-gradient-to-br from-violet-400 to-fuchsia-400 border-violet-500 text-white shadow-sm rounded-md sm:rounded-xl";
+                    else baseStyle = "bg-violet-50 border-violet-100 text-violet-900 rounded-md sm:rounded-xl";
+                } else if (dateKey > todayStr) baseStyle = "bg-slate-50/30 border-slate-100/30 text-slate-200 pointer-events-none rounded-md sm:rounded-xl";
+                const ringStyle = dateKey === todayStr ? "ring-2 ring-rose-400 ring-offset-1 sm:ring-offset-2 font-bold z-10" : "";
+                grid.innerHTML += `<button onclick="showDayDetails('${dateKey}')" class="aspect-square text-[10px] md:text-xs border flex items-center justify-center transition-all transform hover:scale-105 active:scale-95 ${baseStyle} ${ringStyle}">${d}</button>`;
+            }
+        }
+
+        window.showDayDetails = function(dateKey) {
+            const record = history.find(h => h.fullDate === dateKey);
+            const content = document.getElementById('detailsContent'); 
+            const emptyState = document.getElementById('detailsEmpty'); 
+            const badge = document.getElementById('peerCompareBadge');
+            const taskListContainer = document.getElementById('detailTaskList');
+
+            if (!record) {
+                content.classList.add('hidden'); emptyState.classList.remove('hidden');
+                lucide.createIcons();
+                if(window.innerWidth < 1024) document.getElementById('dayDetails').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+
+            emptyState.classList.add('hidden'); content.classList.remove('hidden');
+            document.getElementById('detailDate').innerText = new Date(dateKey.replace(/-/g, '\/')).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            document.getElementById('detailPercentage').innerText = `${record.percentage}%`; 
+            document.getElementById('detailPeerAvg').innerText = `${record.peerAvg}%`; 
+            document.getElementById('detailAiComment').innerText = record.aiComment;
+
+            taskListContainer.innerHTML = '';
+            if (record.tasks && record.tasks.length > 0) {
+                record.tasks.forEach(task => {
+                    const icon = task.completed ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-400 shrink-0"></i>` : `<i data-lucide="x-circle" class="w-3.5 h-3.5 md:w-4 md:h-4 text-rose-400/70 shrink-0"></i>`;
+                    const textStyle = task.completed ? 'text-slate-200' : 'text-slate-500 line-through';
+                    
+                    taskListContainer.innerHTML += `
+                        <div class="flex items-center gap-1.5 md:gap-2 bg-white/5 p-1.5 md:p-2 rounded-lg border border-white/5">
+                            ${icon}
+                            <span class="text-[8px] md:text-[9px] font-bold px-1 py-0.5 rounded uppercase tracking-wide shrink-0 bg-white/10 text-violet-200">${task.category}</span>
+                            <span class="text-[10px] md:text-[11px] font-medium truncate ${textStyle}">${task.text}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                taskListContainer.innerHTML = `<div class="text-[10px] md:text-[11px] text-slate-500 italic py-2">No specific tasks recorded for this day.</div>`;
+            }
+
+            if (record.percentage > record.peerAvg) { badge.innerText = "Alpha Outpace"; badge.className = "text-[8px] md:text-[9px] font-extrabold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"; }
+            else if (record.percentage === record.peerAvg) { badge.innerText = "Cohort Inline"; badge.className = "text-[8px] md:text-[9px] font-extrabold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30"; }
+            else { badge.innerText = "Lag Margin"; badge.className = "text-[8px] md:text-[9px] font-extrabold px-2 md:px-2.5 py-0.5 md:py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30"; }
+            
+            lucide.createIcons();
+            if(window.innerWidth < 1024) document.getElementById('dayDetails').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        updateAllUIs();
+    </script> 
+
                 </div>
 
                 <div id="pyq-panel" class="panel-content hidden space-y-6 sm:space-y-8">
@@ -383,7 +1307,7 @@
                                 <span class="bg-rose-100 text-rose-600 rounded-full w-10 h-10 flex items-center justify-center text-lg font-sans shadow-sm">🎯</span>
                                 MBA Profilizer
                             </h2>
-                            <div class="bg-rose-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md">Profile Locked till 11-Jun-2026</div>
+                            <div class="bg-rose-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md">Profile Locked till 11-Jan-2027</div>
                         </div>
 
                         <form id="profilizer-form" class="space-y-6" onsubmit="event.preventDefault(); assessProfile();">
@@ -803,7 +1727,7 @@
                     <p class="text-xs sm:text-sm text-slate-500 mt-2 italic">How data-driven tracking translates to percentile jumps.</p>
                 </div>
                 <div class="mt-4 md:mt-0">
-                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-sans bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">Trusted by 10,000+ Aspirants</span>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider font-sans bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">Trusted by 12,391+ Aspirants</span>
                 </div>
             </div>
 
